@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import logo from '../../public/assets/logo.jpg'
+import logo from '../../public/assets/logo.png'
 import Link from 'next/link';
 
 const Navbar = () => {
@@ -16,10 +16,6 @@ const Navbar = () => {
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                             <Link href={'/'}><li>Home</li></Link>
                             <Link href={'/all-facilities'}><li>All Facilities</li></Link>
-                            <Link href={'/my-bookings'}><li>My Bookings</li></Link>
-                            <Link href={'/add-facility'}><li>Add Facility</li></Link>
-                            <Link href={'/manage-my-facilities'}><li>Manage My Facilities</li></Link>
-
                         </ul>
                     </div>
                     <Image src={logo} width={120} height={60} alt=''></Image>
@@ -27,10 +23,8 @@ const Navbar = () => {
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1 gap-5">
                         <Link href={'/'}><li>Home</li></Link>
-                            <Link href={'/all-facilities'}><li>All Facilities</li></Link>
-                            <Link href={'/my-bookings'}><li>My Bookings</li></Link>
-                            <Link href={'/add-facility'}><li>Add Facility</li></Link>
-                            <Link href={'/manage-my-facilities'}><li>Manage My Facilities</li></Link>
+                        <Link href={'/all-facilities'}><li>All Facilities</li></Link>
+
                     </ul>
                 </div>
                 <div className="navbar-end">

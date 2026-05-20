@@ -1,56 +1,17 @@
 "use client";
 
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import Link from "next/link";
 
 const SignUpPage = () => {
-  const router = useRouter();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const image = e.target.image.value;
-    const password = e.target.password.value;
-
-    const { data, error } = await authClient.signUp.email({
-      name,
-      email,
-      password,
-      image,
-    });
-
-    console.log({ data, error });
-    setLoading(false);
-
-    if (error) {
-      setError(error.message || "Something went wrong!");
-    } else {
-      router.push('/Signin');
-    }
-  };
-
+ 
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center">
       <div className="card bg-base-100 w-full max-w-lg shadow-lg rounded-2xl">
         <div className="card-body px-10 py-10">
           <h2 className="text-center text-3xl font-bold mb-4">Sign Up</h2>
-
+        
          
-          {error && (
-            <div className="alert alert-error mb-4">
-              <span>{error}</span>
-            </div>
-          )}
-
-          <form onSubmit={onSubmit} className="flex flex-col gap-4">
+          <form  className="flex flex-col gap-4">
             <div className="form-control w-full">
               <label className="label pb-1">
                 <span className="label-text font-medium">Name <span className="text-error">*</span></span>
@@ -83,8 +44,8 @@ const SignUpPage = () => {
             </div>
 
             <div className="flex gap-3 mt-2">
-              <button type="submit" disabled={loading} className="btn btn-primary rounded-full px-6">
-                {loading ? <span className="loading loading-spinner loading-sm"></span> : "Submit"}
+              <button type="submit" className="btn btn-primary rounded-full px-6">
+                 <span className="">Submit</span> 
               </button>
               <button type="reset" className="btn btn-ghost border border-base-300 rounded-full px-6">Reset</button>
             </div>
@@ -92,7 +53,7 @@ const SignUpPage = () => {
 
           <div className="text-center mt-4">
             <span className="text-sm">Already have an account? </span>
-            <Link href="/Signin" className="link link-primary text-sm">Sign In</Link>
+            <Link href="/login" className="link link-primary text-sm">Login</Link>
           </div>
         </div>
       </div>

@@ -8,4 +8,4 @@ const MyBookings = () => {
     );
 };
 
-export default my-bookings;
+export default MyBookings;

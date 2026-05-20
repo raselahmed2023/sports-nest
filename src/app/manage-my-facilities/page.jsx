@@ -8,4 +8,4 @@ const ManageMyFacilities = () => {
     );
 };
 
-export default manage-my-facilities;
+export default ManageMyFacilities;

@@ -1,39 +1,17 @@
 "use client"
 import Link from 'next/link';
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+
 
 const LoginPage = () => {
-    const router = useRouter();
-
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-
-        const { error } = await authClient.signIn.email({
-            email,
-            password,
-            callbackURL: "/"
-        });
-
-        if (!error) router.push('/');
-    };
-
-    const handleGoogleSignIn = async () => {
-        await authClient.signIn.social({
-            provider: "google",
-            callbackURL: "/"
-        });
-    };
+   
 
     return (
         <div className="min-h-screen bg-base-200 flex items-center justify-center">
             <div className="card bg-base-100 w-full max-w-lg shadow-lg rounded-2xl">
                 <div className="card-body px-10 py-10">
-                    <h2 className="text-center text-3xl font-bold mb-4">Sign In</h2>
+                    <h2 className="text-center text-3xl font-bold mb-4">Log in</h2>
 
-                    <form onSubmit={onSubmit} className="flex flex-col gap-4">
+                    <form className="flex flex-col gap-4">
                         <div className="form-control w-full">
                             <label className="label">
                                 <span className="label-text font-medium">Email <span className="text-error">*</span></span>
@@ -69,7 +47,7 @@ const LoginPage = () => {
                     <div className="divider">OR</div>
 
                     <button
-                        onClick={handleGoogleSignIn}
+                        
                         type="button"
                         className="btn btn-outline w-full rounded-full"
                     >
@@ -84,7 +62,7 @@ const LoginPage = () => {
 
                     <div className="text-center mt-4">
                         <span className="text-sm">New user? </span>
-                        <Link href={'/SignUP'} className="link link-primary text-sm">
+                        <Link href={'/signUp'} className="link link-primary text-sm">
                             Register here
                         </Link>
                     </div>

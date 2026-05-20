@@ -1,75 +1,166 @@
-"use client"
-import Link from 'next/link';
+"use client";
+
+import React, { useState } from "react";
+import { authClient } from "../../lib/auth-client";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { FcGoogle } from "react-icons/fc";
+
+export default function LoginPage() {
+  const router = useRouter();
+  const [errors, setErrors] = useState({});
+
+  const validateForm = (user) => {
+    const newErrors = {};
 
 
-const LoginPage = () => {
-   
+    if (!user.email) {
+      newErrors.email = "Email is required";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(user.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
 
-    return (
-        <div className="min-h-screen bg-base-200 flex items-center justify-center">
-            <div className="card bg-base-100 w-full max-w-lg shadow-lg rounded-2xl">
-                <div className="card-body px-10 py-10">
-                    <h2 className="text-center text-3xl font-bold mb-4">Log in</h2>
 
-                    <form className="flex flex-col gap-4">
-                        <div className="form-control w-full">
-                            <label className="label">
-                                <span className="label-text font-medium">Email <span className="text-error">*</span></span>
-                            </label>
-                            <input
-                                name="email"
-                                type="email"
-                                required
-                                placeholder="john@example.com"
-                                className="input input-bordered w-full rounded-xl"
-                            />
-                        </div>
+    const password = user.password || "";
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else {
+      if (password.length < 8) {
+        newErrors.password = "Password must be at least 8 characters";
+      } else if (!/[A-Z]/.test(password)) {
+        newErrors.password = "Password must contain at least one uppercase letter";
+      } else if (!/[0-9]/.test(password)) {
+        newErrors.password = "Password must contain at least one number";
+      }
+    }
 
-                        <div className="form-control w-full">
-                            <label className="label">
-                                <span className="label-text font-medium">Password <span className="text-error">*</span></span>
-                            </label>
-                            <input
-                                name="password"
-                                type="password"
-                                required
-                                minLength={8}
-                                placeholder="Enter your password"
-                                className="input input-bordered w-full rounded-xl"
-                            />
-                        </div>
+    return newErrors;
+  };
 
-                        <button type="submit" className="btn btn-primary rounded-full w-full mt-2">
-                            Sign In
-                        </button>
-                    </form>
 
-                    <div className="divider">OR</div>
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setErrors({});
 
-                    <button
-                        
-                        type="button"
-                        className="btn btn-outline w-full rounded-full"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="h-5 w-5">
-                            <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2v6h7.7c4.5-4.2 7.1-10.3 7.1-17.2z" />
-                            <path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.7-6c-2.1 1.4-4.9 2.3-8.2 2.3-6.3 0-11.6-4.2-13.5-9.9H2.6v6.2C6.5 42.7 14.7 48 24 48z" />
-                            <path fill="#FBBC05" d="M10.5 28.6c-.5-1.4-.8-2.9-.8-4.6s.3-3.2.8-4.6v-6.2H2.6C.9 16.6 0 20.2 0 24s.9 7.4 2.6 10.8l7.9-6.2z" />
-                            <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.9 2.1 30.5 0 24 0 14.7 0 6.5 5.3 2.6 13.2l7.9 6.2C12.4 13.7 17.7 9.5 24 9.5z" />
-                        </svg>
-                        Sign In With Google
-                    </button>
+    const formData = new FormData(e.currentTarget);
+    const user = Object.fromEntries(formData.entries());
 
-                    <div className="text-center mt-4">
-                        <span className="text-sm">New user? </span>
-                        <Link href={'/signUp'} className="link link-primary text-sm">
-                            Register here
-                        </Link>
-                    </div>
-                </div>
-            </div>
+
+    const validationErrors = validateForm(user);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+
+    const { data, error } = await authClient.signIn.email({
+      email: user.email,
+      password: user.password,
+    });
+
+    if (data) {
+      router.push("/");
+    }
+
+    if (error) {
+      alert(error.message || "Invalid email or password. Please try again.");
+    }
+  };
+
+
+  const handleGoogleSignin = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-base-200 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full mx-auto">
+
+        {/* Header */}
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold text-base-content">Login</h1>
         </div>
-    );
-};
 
-export default LoginPage;
+        {/* ── DaisyUI Card ── */}
+        <div className="card bg-base-100 border border-base-300 shadow-sm rounded-2xl overflow-hidden p-6 sm:p-8">
+
+          <form onSubmit={onSubmit} className="flex flex-col gap-4">
+
+            {/* Email Field */}
+            <div className="form-control w-full">
+              <label className="label py-1">
+                <span className="label-text font-semibold text-sm">Email <span className="text-error">*</span></span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="john@example.com"
+                className={`input input-bordered w-full outline-none focus:outline-none border-gray-300 focus:border-green-600 focus:ring-4 focus:ring-green-600/10 transition-all duration-200 ${errors.email ? 'border-error focus:border-error focus:ring-error/10' : ''}`}
+              />
+              {errors.email && (
+                <label className="label py-0.5"><span className="label-text-alt text-error font-medium">{errors.email}</span></label>
+              )}
+            </div>
+
+            {/* Password Field */}
+            <div className="form-control w-full">
+              <label className="label py-1">
+                <span className="label-text font-semibold text-sm">Password <span className="text-error">*</span></span>
+              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                className={`input input-bordered w-full outline-none focus:outline-none border-gray-300 focus:border-green-600 focus:ring-4 focus:ring-green-600/10 transition-all duration-200 ${errors.password ? 'border-error focus:border-error focus:ring-error/10' : ''}`}
+              />
+              <p className="text-[11px] text-base-content/50 mt-1.5 leading-relaxed">
+                Must be at least 8 characters with 1 uppercase and 1 number
+              </p>
+              {errors.password && (
+                <label className="label py-0.5"><span className="label-text-alt text-error font-medium">{errors.password}</span></label>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <div className="form-control mt-2">
+              <button
+                type="submit"
+                className="btn bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl border-none shadow-md shadow-green-600/10 transition-all duration-300"
+              >
+                Login
+              </button>
+            </div>
+          </form>
+
+          {/* ── Divider ── */}
+          <div className="divider my-5 text-xs text-base-content/40 uppercase tracking-wider">
+            Or sign up with
+          </div>
+
+          {/* ── Google Login Button ── */}
+          {/* ── Google Login Button ── */}
+          <div className="form-control">
+            <button
+              type="button"
+              onClick={handleGoogleSignin}
+              className="btn btn-outline border-base-300 hover:bg-base-200 hover:text-base-content gap-3 font-semibold rounded-xl transition-colors duration-200"
+            >
+              <FcGoogle className="text-xl" /> Sign in with Google
+            </button>
+          </div>
+
+          {/* Register link */}
+          <p className="text-center text-sm mt-4">
+            New user ?{" "}
+            <Link href="/signUp" className="text-primary font-medium hover:underline">
+              Register
+            </Link>
+          </p>
+
+        </div>
+      </div>
+    </div>
+  );
+}

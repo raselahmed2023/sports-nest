@@ -18,6 +18,12 @@ const TIME_SLOT_GROUPS = {
 
 export default function AddFacilityPage() {
 
+  const onSubmit=(e)=>{
+     e.preventDefault();
+
+
+  }
+
   const [addedSlots, setAddedSlots] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState("");
 
@@ -44,7 +50,7 @@ export default function AddFacilityPage() {
         </div>
 
         {/* ── Form Card ── */}
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={handleSubmit}>
           <div className="card bg-base-100 border border-base-300 shadow-sm rounded-2xl overflow-hidden">
             
             {/* ── Section 1: Basic Info ── */}

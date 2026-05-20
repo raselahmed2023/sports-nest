@@ -20,7 +20,7 @@ const NotFound = () => {
                     Page Not Found
                 </h2>
                 <p className="text-gray-600 text-base md:text-lg leading-relaxed">
-                    Looks like you took a wrong turn or the sports facility page you are looking for has been moved or canceled. Let's get you back on track!
+                    Looks like you took a wrong turn or the sports facility page you are looking for has been moved or canceled. Lets get you back on track!
                 </p>
             </div>
 

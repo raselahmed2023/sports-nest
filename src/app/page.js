@@ -1,7 +1,8 @@
 import Sports from "../components/Sports.jsx";
 import HeroBanner from "../components/HeroBanner.jsx";
 import SimpleUse from "../components/SimpleUse.jsx";
-import Image from "next/image";
+
+import ReviewSection from "../components/ReviewSec.jsx";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
       <HeroBanner></HeroBanner>
       <Sports></Sports>
       <SimpleUse></SimpleUse>
+      <ReviewSection></ReviewSection>
       
     </div>
   );

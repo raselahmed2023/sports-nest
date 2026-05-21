@@ -5,25 +5,25 @@ export default function HeroBanner() {
     <section className="bg-[#f0fdf4] py-20 px-4">
       <div className="max-w-3xl mx-auto text-center flex flex-col items-center gap-6">
 
-        {/* Badge */}
+        
         <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 text-xs font-semibold px-4 py-1.5 rounded-full">
           <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
           Bangladesh&apos;s #1 Sports Booking Platform
         </div>
 
-        {/* Heading */}
+       
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">
           Find & Book Sports <br />
           <span className="text-green-600">Facilities Near You</span>
         </h1>
 
-        {/* Subtext */}
+     
         <p className="text-gray-500 text-base sm:text-lg max-w-xl">
           Football turfs, badminton courts, swimming lanes and more —
           reserve your slot in seconds. No calls, no waiting.
         </p>
 
-        {/* Buttons */}
+       
         <div className="flex flex-wrap gap-4 justify-center">
           <Link
             href="/all-facilities"
@@ -34,7 +34,7 @@ export default function HeroBanner() {
         
         </div>
 
-        {/* Stats */}
+        
         <div className="flex flex-wrap justify-center gap-8 mt-4 pt-6 border-t border-green-100 w-full">
           {[
             { value: "142+", label: "Facilities" },

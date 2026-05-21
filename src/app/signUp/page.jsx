@@ -27,8 +27,8 @@ export default function SignUpPage() {
       newErrors.password = "Password must be at least 8 characters";
     } else if (!/[A-Z]/.test(password)) {
       newErrors.password = "Password must contain at least one uppercase letter";
-    } else if (!/[0-9]/.test(password)) {
-      newErrors.password = "Password must contain at least one number";
+    } else if (!/[a-z]/.test(password)) {
+      newErrors.password = "Password must contain at least lowercase letter";
     }
     return newErrors;
   };
@@ -52,13 +52,13 @@ export default function SignUpPage() {
       email: user.email,
       password: user.password,
       name: user.name,
-      image: user.image || undefined,
+      image: user.image
     });
 
     setLoading(false);
 
     if (data) {
-      toast.success("Account created! Please login 🎉");
+      toast.success("Account created! Please login");
       router.push("/login");
     }
 
@@ -104,7 +104,7 @@ export default function SignUpPage() {
               )}
             </div>
 
-            {/* Image URL */}
+          
             <div className="form-control w-full">
               <label className="label py-1">
                 <span className="label-text font-semibold text-sm">Profile Image URL</span>
@@ -151,7 +151,7 @@ export default function SignUpPage() {
                 className={`input input-bordered w-full outline-none focus:outline-none border-gray-300 focus:border-green-600 focus:ring-4 focus:ring-green-600/10 transition-all duration-200 ${errors.password ? "border-error" : ""}`}
               />
               <p className="text-[11px] text-base-content/50 mt-1.5">
-                At least 8 characters, 1 uppercase, 1 number
+                At least 8 characters, 1 uppercase, 1 lower
               </p>
               {errors.password && (
                 <label className="label py-0.5">
@@ -176,7 +176,7 @@ export default function SignUpPage() {
             Or sign up with
           </div>
 
-          <div className="form-control">
+          <div className="form-control text-center items-center">
             <button
               type="button"
               onClick={handleGoogleSignin}

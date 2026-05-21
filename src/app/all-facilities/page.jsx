@@ -1,4 +1,4 @@
-import Sports from "../../components/SportsCard";
+import SportsCard from "../../components/SportsCard";
 
 
 const AllFacilities = async () => {
@@ -19,7 +19,7 @@ const AllFacilities = async () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
                 {facilities.map((facility) => (
-                    <Sports
+                    <SportsCard
                         key={facility._id}
                         facility={facility}
                     />

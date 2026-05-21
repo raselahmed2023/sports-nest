@@ -21,9 +21,9 @@ const Navbar = () => {
         <div className='bg-white shadow-sm sticky top-0 z-30 border-b border-gray-100'>
             <div className="navbar mx-auto container px-4 sm:px-4 lg:px-2 h-16">
 
-                {/* Left: Logo + Mobile Menu */}
+              
                 <div className="navbar-start">
-                    {/* Mobile hamburger - only visible on small screens */}
+                    
                     <div className="dropdown lg:hidden">
                         <div tabIndex={0} role="button" className="btn btn-ghost mr-2">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -53,7 +53,7 @@ const Navbar = () => {
                     </Link>
                 </div>
 
-                {/* Center: Desktop/Tablet Nav - hidden on mobile */}
+                
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1 gap-8 text-[15px] font-semibold text-gray-700">
                         <li><Link href="/" className="font-medium py-2">Home</Link></li>
@@ -61,10 +61,10 @@ const Navbar = () => {
                     </ul>
                 </div>
 
-                {/* Right: Always Login button OR Profile dropdown - visible on all devices except mobile hamburger */}
+                
                 <div className="navbar-end">
                     {!user ? (
-                        // NOT logged in: Show Login button
+                        // NOT logged in
                         <Link
                             href="/login"
                             className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-full shadow-md shadow-green-600/10 transition-all duration-300 hover:-translate-y-0.5"

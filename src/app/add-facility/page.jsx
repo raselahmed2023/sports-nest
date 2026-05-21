@@ -53,7 +53,7 @@ export default function AddFacilityPage() {
 
     console.log("Submitting:", facility);
 
-    const res = await fetch("http://localhost:5000/facilities", {
+    const res = await fetch("http://localhost:8000/facilities", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(facility),

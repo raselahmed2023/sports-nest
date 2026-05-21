@@ -31,12 +31,7 @@ export default function HeroBanner() {
           >
             Explore Facilities
           </Link>
-          <Link
-            href="/add-facility"
-            className="border border-green-600 text-green-700 hover:bg-green-50 font-semibold px-7 py-3 rounded-full transition-all duration-300"
-          >
-            List Your Facility
-          </Link>
+        
         </div>
 
         {/* Stats */}

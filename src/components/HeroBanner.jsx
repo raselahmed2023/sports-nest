@@ -19,7 +19,7 @@ export default function HeroBanner() {
 
      
         <p className="text-gray-500 text-base sm:text-lg max-w-xl">
-          Football turfs, badminton courts, swimming lanes and more —
+          Football turfs, badminton courts, swimming lanes and more 
           reserve your slot in seconds. No calls, no waiting.
         </p>
 

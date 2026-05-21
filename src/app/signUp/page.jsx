@@ -84,7 +84,7 @@ export default function SignUpPage() {
 
           <form onSubmit={onSubmit} className="flex flex-col gap-4">
 
-            {/* Name */}
+          
             <div className="form-control w-full">
               <label className="label py-1">
                 <span className="label-text font-semibold text-sm">
@@ -117,7 +117,7 @@ export default function SignUpPage() {
               />
             </div>
 
-            {/* Email */}
+           
             <div className="form-control w-full">
               <label className="label py-1">
                 <span className="label-text font-semibold text-sm">
@@ -148,8 +148,7 @@ export default function SignUpPage() {
                 type="password"
                 name="password"
                 placeholder="Enter your password"
-                className={`input input-bordered w-full outline-none focus:outline-none border-gray-300 focus:border-green-600 focus:ring-4 focus:ring-green-600/10 transition-all duration-200 ${errors.password ? "border-error" : ""}`}
-              />
+                className={`input input-bordered w-full outline-none focus:outline-none border-gray-300 focus:border-green-600 focus:ring-4 focus:ring-green-600/10 transition-all duration-200 ${errors.password ? "border-error" : ""}`} />
               <p className="text-[11px] text-base-content/50 mt-1.5">
                 At least 8 characters, 1 uppercase, 1 lower
               </p>
@@ -160,28 +159,25 @@ export default function SignUpPage() {
               )}
             </div>
 
-            {/* Submit */}
+          
             <div className="form-control mt-2">
               <button
                 type="submit"
                 disabled={loading}
-                className="btn bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl border-none shadow-md transition-all duration-300"
-              >
+                className="btn bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl border-none shadow-md transition-all duration-300">
                 {loading ? <span className="loading loading-spinner loading-sm" /> : "Create Account"}
               </button>
             </div>
           </form>
 
           <div className="divider my-5 text-xs text-base-content/40 uppercase tracking-wider">
-            Or sign up with
-          </div>
+            Or sign up with </div>
 
           <div className="form-control text-center items-center">
             <button
               type="button"
               onClick={handleGoogleSignin}
-              className="btn btn-outline border-base-300 hover:bg-base-200 gap-3 font-semibold rounded-xl transition-colors duration-200"
-            >
+              className="btn btn-outline border-base-300 hover:bg-base-200 gap-3 font-semibold rounded-xl transition-colors duration-200">
               <FcGoogle className="text-xl" /> Sign up with Google
             </button>
           </div>
@@ -192,7 +188,6 @@ export default function SignUpPage() {
               Login
             </Link>
           </p>
-
         </div>
       </div>
     </div>

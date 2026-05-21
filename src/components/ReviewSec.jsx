@@ -60,7 +60,7 @@ const REVIEWS = [
   },
 ];
 
-// ── Star rating ──
+
 function Stars({ count }) {
   return (
     <div className="flex gap-0.5">

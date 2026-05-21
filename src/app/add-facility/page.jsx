@@ -41,17 +41,12 @@ export default function AddFacilityPage() {
     const formData = new FormData(e.currentTarget);
     const facility = Object.fromEntries(formData.entries());
 
-    // ── available_slots 
+   
     facility.available_slots = addedSlots;
-
-    // ── number convert ──
     facility.price_per_hour = Number(facility.price_per_hour);
     facility.capacity = Number(facility.capacity);
-
-    // ── booking_count default ──
     facility.booking_count = 0;
 
-    console.log("Submitting:", facility);
 
     const res = await fetch("http://localhost:8000/facilities", {
       method: "POST",
@@ -60,7 +55,7 @@ export default function AddFacilityPage() {
     });
 
     const data = await res.json();
-    console.log("Result:", data);
+ 
   };
 
   return (
@@ -76,7 +71,7 @@ export default function AddFacilityPage() {
         <form onSubmit={onSubmit}>
           <div className="card bg-base-100 border border-base-300 shadow-sm rounded-2xl overflow-hidden">
 
-            {/* ── Section 1: Basic Info ── */}
+         
             <div className="navbar bg-base-200/50 px-6 py-3 border-b border-base-300 min-h-0">
               <span className="flex items-center gap-2 text-xs font-bold tracking-wider text-base-content/50 uppercase">
                  Basic Information
@@ -86,7 +81,6 @@ export default function AddFacilityPage() {
             <div className="card-body p-6 gap-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                {/* ✅ name="name" যোগ হয়েছে */}
                 <div className="form-control w-full">
                   <label className="label py-1">
                     <span className="label-text font-semibold text-sm">
@@ -263,7 +257,7 @@ export default function AddFacilityPage() {
 
             <div className="divider my-0" />
 
-            {/* ── Section 4: Image URL ── */}
+           
             <div className="navbar bg-base-200/50 px-6 py-3 border-b border-base-300 min-h-0">
               <span className="flex items-center gap-2 text-xs font-bold tracking-wider text-base-content/50 uppercase">
                  Facility Image
@@ -296,7 +290,7 @@ export default function AddFacilityPage() {
 
             <div className="divider my-0" />
 
-            {/* ── Section 5: Owner Info ── */}
+            
             <div className="navbar bg-base-200/50 px-6 py-3 border-b border-base-300 min-h-0">
               <span className="flex items-center gap-2 text-xs font-bold tracking-wider text-base-content/50 uppercase">
                  Owner Info

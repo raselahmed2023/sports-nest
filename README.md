@@ -1,7 +1,7 @@
 SportNest
 Purpose: SportNest is a sports facility booking platform where users can browse, book, and manage sports facilities. Facility owners can add and manage their own listings.
 
-Live URL: 
+Live URL: https://sports-nest-gules.vercel.app
 
 Featured NPM Packages:
 Better auth ,

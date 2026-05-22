@@ -41,8 +41,7 @@ export default function BookingForm({ facility }) {
       status: "pending",
     };
 
-    const res = await fetch(
-      "http://localhost:8000/bookings",
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings`,
       {
         method: "POST",
         headers: {

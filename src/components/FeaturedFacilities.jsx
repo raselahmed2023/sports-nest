@@ -12,7 +12,7 @@ const FeaturedFacilities = () => {
     fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/facilities`)
       .then((res) => res.json())
       .then((data) => {
-        setFacilities(data.slice(0, 6)); 
+        setFacilities(data.slice(0, 6));
         setLoading(false);
       })
       .catch((err) => {
@@ -37,7 +37,7 @@ const FeaturedFacilities = () => {
             key={facility._id}
             className="card bg-base-100 shadow-sm"
           >
-            
+
             <figure>
               <Image
                 src={facility.image}
@@ -48,9 +48,9 @@ const FeaturedFacilities = () => {
               />
             </figure>
 
-          
+
             <div className="card-body p-4">
-             
+
               <h2 className="card-title text-lg flex justify-between items-center">
                 {facility.name}
                 <span className="badge badge-outline capitalize">
@@ -63,12 +63,6 @@ const FeaturedFacilities = () => {
               <p className="font-semibold text-green-600">
                 ৳ {facility.price_per_hour} / hour
               </p>
-
-              <div className="card-actions mt-3">
-                <button className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-full shadow-md shadow-green-600/10 transition-all duration-300 hover:-translate-y-0.5 ">
-                  Book Now
-                </button>
-              </div>
             </div>
           </div>
         ))}

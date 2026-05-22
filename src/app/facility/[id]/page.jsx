@@ -11,7 +11,7 @@ import { TbCoinTaka } from "react-icons/tb";
 export default async function FacilityDetailsPage({ params }) {
   const { id } = await params;
 
-  const res = await fetch(`http://localhost:8000/facility/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/facility/${id}`, {
     cache: "no-store",
   });
 

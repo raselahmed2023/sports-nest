@@ -22,7 +22,7 @@ const UpdateFacilityModal = ({ facility }) => {
         };
 
         const res = await fetch(
-            `http://localhost:8000/facilities/${facility._id}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/facilities/${facility._id}`,
             {
                 method: "PUT",
                 headers: {

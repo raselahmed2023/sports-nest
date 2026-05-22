@@ -6,7 +6,7 @@ const MyBooking = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:8000/bookings", {
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings`, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -19,7 +19,7 @@ const MyBooking = () => {
   const handleCancel = async (id) => {
     const token = localStorage.getItem("token");
     const res = await fetch(
-      `http://localhost:8000/bookings/${id}`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/${id}`,
       {
         method: "DELETE",
         headers: {

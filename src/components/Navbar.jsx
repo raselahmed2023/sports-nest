@@ -15,8 +15,9 @@ const Navbar = () => {
     useEffect(() => {
         const syncToken = async () => {
             if (!session?.user) return;
-            const { data: token } = await authClient.getToken();
-            if (token) localStorage.setItem("token", token);
+            const res = await fetch("/api/auth/token", { credentials: "include" });
+            const tokenData = await res.json();
+            if (tokenData?.token) localStorage.setItem("token", tokenData.token);
         };
         syncToken();
     }, [session]);
@@ -27,7 +28,7 @@ const Navbar = () => {
         router.push("/login");
     };
 
-    return ( 
+    return (
         <div className='bg-white shadow-sm sticky top-0 z-30 border-b border-gray-100'>
             <div className="navbar mx-auto container px-4 sm:px-4 lg:px-2 h-16">
 
@@ -104,7 +105,7 @@ const Navbar = () => {
 
             </div>
         </div>
-    ); 
+    );
 };
 
 export default Navbar;

@@ -5,7 +5,7 @@ export default function DeleteModal({ id }) {
   const handleDelete = async () => {
   const token = localStorage.getItem("token");
   const res = await fetch(
-    `http://localhost:8000/facilities/${id}`,
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/facilities/${id}`,
     {
       method: "DELETE",
       headers: {

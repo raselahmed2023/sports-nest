@@ -55,10 +55,7 @@ export default function LoginPage() {
         credentials: "include",
       });
       const tokenData = await res.json();
-      console.log("Token:", tokenData);
-      if (tokenData?.token) {
-        localStorage.setItem("token", tokenData.token);
-      }
+      if (tokenData?.token) { localStorage.setItem("token", tokenData.token); }
       toast.success("Login successful!");
       router.push("/");
       router.refresh();

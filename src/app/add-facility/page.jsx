@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { authClient } from "../../lib/auth-client";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const FACILITY_TYPES = [
   { value: "football", label: "Football Turf" },
@@ -20,6 +22,7 @@ export default function AddFacilityPage() {
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
+  const router = useRouter();
 
   const [addedSlots, setAddedSlots] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState("");
@@ -41,21 +44,29 @@ export default function AddFacilityPage() {
     const formData = new FormData(e.currentTarget);
     const facility = Object.fromEntries(formData.entries());
 
-   
+
     facility.available_slots = addedSlots;
     facility.price_per_hour = Number(facility.price_per_hour);
     facility.capacity = Number(facility.capacity);
     facility.booking_count = 0;
 
 
-    const res = await fetch("http://localhost:8000/facilities", {
+
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/facilities`, {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(facility),
     });
-
     const data = await res.json();
- 
+    if (data.insertedId) {
+      toast.success("Facility Added!");
+      router.push("/manage-my-facilities");
+    }
+
   };
 
   return (
@@ -71,10 +82,10 @@ export default function AddFacilityPage() {
         <form onSubmit={onSubmit}>
           <div className="card bg-base-100 border border-base-300 shadow-sm rounded-2xl overflow-hidden">
 
-         
+
             <div className="navbar bg-base-200/50 px-6 py-3 border-b border-base-300 min-h-0">
               <span className="flex items-center gap-2 text-xs font-bold tracking-wider text-base-content/50 uppercase">
-                 Basic Information
+                Basic Information
               </span>
             </div>
 
@@ -95,7 +106,7 @@ export default function AddFacilityPage() {
                   />
                 </div>
 
-                
+
                 <div className="form-control w-full">
                   <label className="label py-1">
                     <span className="label-text font-semibold text-sm">
@@ -114,7 +125,7 @@ export default function AddFacilityPage() {
                 </div>
               </div>
 
-              
+
               <div className="form-control w-full">
                 <label className="label py-1">
                   <span className="label-text font-semibold text-sm">
@@ -131,17 +142,17 @@ export default function AddFacilityPage() {
 
             <div className="divider my-0" />
 
-            
+
             <div className="navbar bg-base-200/50 px-6 py-3 border-b border-base-300 min-h-0">
               <span className="flex items-center gap-2 text-xs font-bold tracking-wider text-base-content/50 uppercase">
-               Location & Pricing
+                Location & Pricing
               </span>
             </div>
 
             <div className="card-body p-6 gap-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-               
+
                 <div className="form-control w-full">
                   <label className="label py-1">
                     <span className="label-text font-semibold text-sm">
@@ -156,7 +167,7 @@ export default function AddFacilityPage() {
                   />
                 </div>
 
-               
+
                 <div className="form-control w-full">
                   <label className="label py-1">
                     <span className="label-text font-semibold text-sm">
@@ -173,7 +184,7 @@ export default function AddFacilityPage() {
                 </div>
               </div>
 
-             
+
               <div className="form-control w-full max-w-xs">
                 <label className="label py-1">
                   <span className="label-text font-semibold text-sm">
@@ -192,10 +203,10 @@ export default function AddFacilityPage() {
 
             <div className="divider my-0" />
 
-           
+
             <div className="navbar bg-base-200/50 px-6 py-3 border-b border-base-300 min-h-0">
               <span className="flex items-center gap-2 text-xs font-bold tracking-wider text-base-content/50 uppercase">
-                 Available Time Slots
+                Available Time Slots
               </span>
             </div>
 
@@ -257,10 +268,10 @@ export default function AddFacilityPage() {
 
             <div className="divider my-0" />
 
-           
+
             <div className="navbar bg-base-200/50 px-6 py-3 border-b border-base-300 min-h-0">
               <span className="flex items-center gap-2 text-xs font-bold tracking-wider text-base-content/50 uppercase">
-                 Facility Image
+                Facility Image
               </span>
             </div>
 
@@ -271,7 +282,7 @@ export default function AddFacilityPage() {
                     Image URL <span className="text-error">*</span>
                   </span>
                 </label>
-               
+
 
 
                 <input
@@ -282,7 +293,7 @@ export default function AddFacilityPage() {
                 />
                 <label className="label py-0.5">
                   <span className="label-text-alt text-base-content/50">
-                    imgbb.com / postimage.org 
+                    imgbb.com / postimage.org
                   </span>
                 </label>
               </div>
@@ -290,10 +301,10 @@ export default function AddFacilityPage() {
 
             <div className="divider my-0" />
 
-            
+
             <div className="navbar bg-base-200/50 px-6 py-3 border-b border-base-300 min-h-0">
               <span className="flex items-center gap-2 text-xs font-bold tracking-wider text-base-content/50 uppercase">
-                 Owner Info
+                Owner Info
               </span>
             </div>
 
@@ -302,7 +313,7 @@ export default function AddFacilityPage() {
                 <label className="label py-1">
                   <span className="label-text font-semibold text-sm">Owner Email</span>
                 </label>
-                
+
                 <input
                   type="email"
                   name="owner_email"
@@ -315,7 +326,7 @@ export default function AddFacilityPage() {
 
             <div className="divider my-0" />
 
-           
+
             <div className="px-6 py-5 bg-base-200/40 flex items-center justify-between gap-4">
               <button
                 type="button"

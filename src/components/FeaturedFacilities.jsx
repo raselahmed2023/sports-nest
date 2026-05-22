@@ -9,7 +9,7 @@ const FeaturedFacilities = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8000/facilities")
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/facilities`)
       .then((res) => res.json())
       .then((data) => {
         setFacilities(data.slice(0, 6)); 

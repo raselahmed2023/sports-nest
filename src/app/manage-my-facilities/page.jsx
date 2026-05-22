@@ -9,7 +9,7 @@ export default function ManageMyFacilities() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    fetch("http://localhost:8000/my-facilities", {
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/my-facilities`, {
       headers: {
         authorization: `Bearer ${token}`,
       },

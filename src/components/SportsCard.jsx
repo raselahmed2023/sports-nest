@@ -3,13 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { LuMapPin } from "react-icons/lu";
 import { IoIosPeople } from "react-icons/io";
-import { authClient } from "../lib/auth-client";
 
 
 const SportsCard = ({ facility }) => {
-    const { data: session } = authClient.useSession();
-    const user = session?.user;
-    return (
+    return(
         <div className="card bg-base-100 shadow-sm">
 
             <figure>
@@ -37,7 +34,7 @@ const SportsCard = ({ facility }) => {
                     Taka {facility.price_per_hour} / hour</p>
 
                 <div className="card-actions mt-3">
-                    <Link href={user ? `/facility/${facility._id}` : "/login"}>
+                    <Link href={`/facility/${facility._id}`}>
                         <button className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-full shadow-md shadow-green-600/10 transition-all duration-300 hover:-translate-y-0.5 w-full justify-center">
                             Book Now
                         </button>

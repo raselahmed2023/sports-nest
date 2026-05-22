@@ -1,18 +1,23 @@
 "use client";
 
 export default function DeleteModal({ id }) {
+  
   const handleDelete = async () => {
-    const res = await fetch(
-      `http://localhost:8000/facilities/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
-    const data = await res.json();
-    if (data.deletedCount > 0) {
-      window.location.reload();
+  const token = localStorage.getItem("token");
+  const res = await fetch(
+    `http://localhost:8000/facilities/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     }
-  };
+  );
+  const data = await res.json();
+  if (data.deletedCount > 0) {
+    window.location.reload();
+  }
+};
 
   return (
     <>

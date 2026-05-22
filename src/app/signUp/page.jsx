@@ -23,8 +23,8 @@ export default function SignUpPage() {
     const password = user.password || "";
     if (!password) {
       newErrors.password = "Password is required";
-    } else if (password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
     } else if (!/[A-Z]/.test(password)) {
       newErrors.password = "Password must contain at least one uppercase letter";
     } else if (!/[a-z]/.test(password)) {
@@ -150,7 +150,7 @@ export default function SignUpPage() {
                 placeholder="Enter your password"
                 className={`input input-bordered w-full outline-none focus:outline-none border-gray-300 focus:border-green-600 focus:ring-4 focus:ring-green-600/10 transition-all duration-200 ${errors.password ? "border-error" : ""}`} />
               <p className="text-[11px] text-base-content/50 mt-1.5">
-                At least 8 characters, 1 uppercase, 1 lower
+                At least 6 characters, 1 uppercase, 1 lowercase
               </p>
               {errors.password && (
                 <label className="label py-0.5">

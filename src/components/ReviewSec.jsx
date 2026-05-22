@@ -79,12 +79,12 @@ function Stars({ count }) {
   );
 }
 
-// ── Single review card ──
+
 function ReviewCard({ review }) {
   return (
     <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col gap-4 w-full">
 
-      {/* Top: avatar + name + stars */}
+      
       <div className="flex items-center gap-3">
         <div className="w-11 h-11 rounded-full bg-green-100 text-green-700 font-bold text-sm flex items-center justify-center flex-shrink-0">
           {review.avatar}
@@ -96,12 +96,12 @@ function ReviewCard({ review }) {
         <Stars count={review.rating} />
       </div>
 
-      {/* Review text */}
+
       <p className="text-gray-500 text-sm leading-relaxed">
         &ldquo;{review.text}&rdquo;
       </p>
 
-      {/* Bottom: facility */}
+     
       <div className="flex items-center gap-2 pt-2 border-t border-gray-50">
         <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
         <span className="text-xs text-gray-400">
@@ -113,7 +113,7 @@ function ReviewCard({ review }) {
   );
 }
 
-// ── Dot indicators ──
+
 function Dots({ total, current, onChange }) {
   return (
     <div className="flex gap-2 justify-center mt-6">
@@ -130,12 +130,12 @@ function Dots({ total, current, onChange }) {
   );
 }
 
-// ── Main export ──
+
 export default function ReviewSection() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1); // 1 = left, -1 = right
 
-  // auto-play
+  
   useEffect(() => {
     const timer = setInterval(() => {
       setDirection(1);
@@ -180,7 +180,7 @@ export default function ReviewSection() {
     <section className="py-20 bg-gray-50">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Header */}
+     
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-4">
             ⭐ Trusted by players
@@ -191,7 +191,7 @@ export default function ReviewSection() {
           </p>
         </div>
 
-        {/* Slider */}
+     
         <div className="relative overflow-hidden">
           <AnimatePresence custom={direction} mode="wait">
             <motion.div
@@ -207,10 +207,9 @@ export default function ReviewSection() {
           </AnimatePresence>
         </div>
 
-        {/* Dots */}
+       
         <Dots total={REVIEWS.length} current={current} onChange={goTo} />
 
-        {/* Prev / Next buttons */}
         <div className="flex justify-center gap-3 mt-5">
           <button
             onClick={prev}

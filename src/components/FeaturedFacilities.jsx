@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { LuMapPin } from "react-icons/lu";
 
 const FeaturedFacilities = () => {
   const [facilities, setFacilities] = useState([]);
@@ -36,7 +37,7 @@ const FeaturedFacilities = () => {
             key={facility._id}
             className="card bg-base-100 shadow-sm"
           >
-            {/* Image */}
+            
             <figure>
               <Image
                 src={facility.image}
@@ -47,9 +48,9 @@ const FeaturedFacilities = () => {
               />
             </figure>
 
-            {/* Body */}
+          
             <div className="card-body p-4">
-              {/* Name + Type */}
+             
               <h2 className="card-title text-lg flex justify-between items-center">
                 {facility.name}
                 <span className="badge badge-outline capitalize">
@@ -57,7 +58,7 @@ const FeaturedFacilities = () => {
                 </span>
               </h2>
 
-              <p className="text-sm">📍 {facility.location}</p>
+              <p className="text-sm flex text-center items-center gap-2"><LuMapPin /> {facility.location}</p>
 
               <p className="font-semibold text-green-600">
                 ৳ {facility.price_per_hour} / hour

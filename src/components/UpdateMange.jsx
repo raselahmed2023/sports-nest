@@ -13,7 +13,6 @@ const UpdateFacilityModal = ({ facility }) => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-
         const updatedFacility = {
             name,
             description,
@@ -28,6 +27,7 @@ const UpdateFacilityModal = ({ facility }) => {
                 method: "PUT",
                 headers: {
                     "content-type": "application/json",
+                    authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
                 body: JSON.stringify(updatedFacility),
             }
@@ -52,11 +52,8 @@ const UpdateFacilityModal = ({ facility }) => {
 
             <dialog id={`modal-${facility._id}`} className="modal">
                 <div className="modal-box">
-
                     <h3 className="font-bold text-lg mb-4"> Update Facility </h3>
-
                     <form onSubmit={handleUpdate} className="space-y-3">
-
                         <input
                             type="text"
                             defaultValue={facility.name}
@@ -94,7 +91,6 @@ const UpdateFacilityModal = ({ facility }) => {
                         <button className="btn btn-ghost w-full">Update</button>
 
                     </form>
-
 
                     <div className="modal-action">
                         <form method="dialog">

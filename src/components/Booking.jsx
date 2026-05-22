@@ -47,6 +47,7 @@ export default function BookingForm({ facility }) {
         method: "POST",
         headers: {
           "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(bookingInfo),
       }
@@ -80,7 +81,7 @@ export default function BookingForm({ facility }) {
           />
         </div>
 
-       
+
         <div>
           <label className="font-medium text-sm">Date </label>
 
@@ -89,10 +90,10 @@ export default function BookingForm({ facility }) {
             min={today}
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="input input-bordered w-full mt-1"/>
+            className="input input-bordered w-full mt-1" />
         </div>
 
-        
+
         <div>
           <label className="font-medium text-sm">
             Time Slot
@@ -116,7 +117,7 @@ export default function BookingForm({ facility }) {
           </select>
         </div>
 
-       
+
         <div>
           <label className="font-medium text-sm">
             Hours
@@ -132,7 +133,7 @@ export default function BookingForm({ facility }) {
           />
         </div>
 
-     
+
         <div className="bg-base-200 p-4 rounded-xl">
           <p> Price Per Hour: ৳ {facility.price_per_hour}</p>
           <p className="font-bold text-green-600 mt-1">Total: ৳ {total}</p>

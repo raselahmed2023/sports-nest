@@ -5,25 +5,32 @@ const MyBooking = () => {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:8000/bookings", {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setBookings(data));
 
-    fetch("http://localhost:8000/bookings")
-      .then(res => res.json())
-      .then(data => setBookings(data));
   }, []);
 
   const handleCancel = async (id) => {
+    const token = localStorage.getItem("token");
     const res = await fetch(
       `http://localhost:8000/bookings/${id}`,
       {
         method: "DELETE",
+        headers: {
+          authorization: `Bearer ${token}`, 
+        },
       }
     );
 
     const data = await res.json();
-
     if (data.deletedCount > 0) {
       window.location.reload();
-
     }
   };
 

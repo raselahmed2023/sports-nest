@@ -22,8 +22,8 @@ export default function LoginPage() {
     const password = user.password || "";
     if (!password) {
       newErrors.password = "Password is required";
-    } else if (password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
     } else if (!/[A-Z]/.test(password)) {
       newErrors.password = "Password must contain at least one uppercase letter";
     } else if (!/[a-z]/.test(password)) {
@@ -35,29 +35,33 @@ export default function LoginPage() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
-
     const validationErrors = validateForm(user);
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-
     setLoading(true);
-
     const { data, error } = await authClient.signIn.email({
       email: user.email,
       password: user.password,
     });
 
     setLoading(false);
-
     if (data) {
-      toast.success("Login successful! Welcome back ");
+      const res = await fetch("/api/auth/token", {
+        credentials: "include",
+      });
+      const tokenData = await res.json();
+      console.log("Token:", tokenData);
+      if (tokenData?.token) {
+        localStorage.setItem("token", tokenData.token);
+      }
+      toast.success("Login successful!");
       router.push("/");
-      router.refresh(); 
+      router.refresh();
     }
 
     if (error) {
@@ -81,7 +85,7 @@ export default function LoginPage() {
 
           <form onSubmit={onSubmit} className="flex flex-col gap-4">
 
-            {/* Email */}
+
             <div className="form-control w-full">
               <label className="label py-1">
                 <span className="label-text font-semibold text-sm">
@@ -115,7 +119,7 @@ export default function LoginPage() {
                 className={`input input-bordered w-full outline-none focus:outline-none border-gray-300 focus:border-green-600 focus:ring-4 focus:ring-green-600/10 transition-all duration-200 ${errors.password ? "border-error" : ""}`}
               />
               <p className="text-[11px] text-base-content/50 mt-1.5">
-                At least 8 characters, 1 uppercase, 1 lowercase
+                At least 6 characters, 1 uppercase, 1 lowercase
               </p>
               {errors.password && (
                 <label className="label py-0.5">

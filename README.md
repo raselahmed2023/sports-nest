@@ -1,14 +1,14 @@
-# 🏟️ SportNest
+#  SportNest
 
 SportNest is a full-stack sports facility booking platform where users can browse, book, and manage sports facilities. Facility owners can create, update, and manage their own listings through a dedicated dashboard.
 
-## 🌐 Live Demo
+##  Live Demo
 
 🔗 https://sports-nest-gules.vercel.app
 
 ---
 
-## 🚀 Key Features
+##  Key Features
 
 ### 👤 Authentication & Authorization
 
@@ -17,7 +17,7 @@ SportNest is a full-stack sports facility booking platform where users can brows
 * Role-based access control
 * Protected routes for users and facility owners
 
-### 🏟️ Facility Management
+###  Facility Management
 
 * Facility owners can add new facilities
 * Update existing facility information
@@ -37,7 +37,7 @@ SportNest is a full-stack sports facility booking platform where users can brows
 * Owner dashboard for facility management
 * Responsive and user-friendly interface
 
-### 📱 Responsive Design
+### Responsive Design
 
 * Fully responsive across mobile, tablet, and desktop devices
 * Modern UI built with Tailwind CSS and DaisyUI
@@ -138,7 +138,7 @@ npm run dev
 
 ---
 
-## 🔮 Future Improvements
+##  Future Improvements
 
 * Online payment integration
 * Facility reviews and ratings

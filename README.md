@@ -80,15 +80,15 @@ SportNest is a full-stack sports facility booking platform where users can brows
 
 ### Home Page
 
-<img width="400" height="400" alt="Screenshot 2026-06-04 061811" src="https://github.com/user-attachments/assets/a86b7570-ebff-4117-8bad-169c75057404" />
+<img width="800" height="400" alt="Screenshot 2026-06-04 061811" src="https://github.com/user-attachments/assets/a86b7570-ebff-4117-8bad-169c75057404" />
 
 ### Facility Details
 
-<img width="400" height="400" alt="Screenshot 2026-06-04 093225" src="https://github.com/user-attachments/assets/d8d20d98-e285-4981-b78a-ded2b1d2a7e5" />
+<img width="800" height="400" alt="Screenshot 2026-06-04 093225" src="https://github.com/user-attachments/assets/d8d20d98-e285-4981-b78a-ded2b1d2a7e5" />
 
 ### Dashboard
 
-<img width="400" height="400" alt="Screenshot 2026-06-04 093459" src="https://github.com/user-attachments/assets/ecb5a73b-9310-486e-9732-0fd7220464fc" />
+<img width="800" height="400" alt="Screenshot 2026-06-04 093459" src="https://github.com/user-attachments/assets/ecb5a73b-9310-486e-9732-0fd7220464fc" />
 
 
 ---

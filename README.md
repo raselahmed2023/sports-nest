@@ -98,8 +98,8 @@ SportNest is a full-stack sports facility booking platform where users can brows
 ### Clone Repository
 
 ```bash
-git clone YOUR_REPOSITORY_URL
-cd sportsnest
+git clone https://github.com/raselahmed2023/sports-nest.git
+cd sports-nest
 ```
 
 ### Install Dependencies

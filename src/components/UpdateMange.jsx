@@ -3,104 +3,287 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const UpdateFacilityModal = ({ facility }) => {
+const FACILITY_TYPES = [
+  { value: "football", label: "Football Turf" },
+  { value: "badminton", label: "Badminton Court" },
+  { value: "cricket", label: "Cricket Indoor" },
+  { value: "swimming", label: "Swimming Lane" },
+  { value: "tennis", label: "Tennis Court" },
+  { value: "basketball", label: "Basketball Court" },
+];
 
-    const [name, setName] = useState(facility.name);
-    const [description, setDescription] = useState(facility.description);
-    const [capacity, setCapacity] = useState(facility.capacity);
-    const [price, setPrice] = useState(facility.price_per_hour);
-    const [image, setImage] = useState(facility.image);
+const UpdateFacilityModal = ({ facility, onUpdated }) => {
+  const modalId = `update-facility-${facility._id}`;
 
-    const handleUpdate = async (e) => {
-        e.preventDefault();
-        const updatedFacility = {
-            name,
-            description,
-            capacity,
-            price_per_hour: price,
-            image
-        };
+  const [formData, setFormData] = useState({
+    name: facility.name || "",
+    facility_type: facility.facility_type || "",
+    location: facility.location || "",
+    description: facility.description || "",
+    capacity: facility.capacity || "",
+    price_per_hour: facility.price_per_hour || "",
+    image: facility.image || "",
+  });
 
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/facilities/${facility._id}`,
-            {
-                method: "PUT",
-                headers: {
-                    "content-type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-                body: JSON.stringify(updatedFacility),
-            }
-        );
+  const [updating, setUpdating] = useState(false);
 
-        const data = await res.json();
+  const openModal = () => {
+    document.getElementById(modalId).showModal();
+  };
 
-        if (data.modifiedCount > 0) {
-            toast.success("Facility Updated");
-            document.getElementById(`modal-${facility._id}`).close();
-        }
-        window.location.reload();
+  const closeModal = () => {
+    document.getElementById(modalId).close();
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((previousData) => ({
+      ...previousData,
+      [name]: value,
+    }));
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    if (
+      !formData.name ||
+      !formData.facility_type ||
+      !formData.location ||
+      !formData.description ||
+      !formData.capacity ||
+      !formData.price_per_hour ||
+      !formData.image
+    ) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    const updatedFacility = {
+      name: formData.name,
+      facility_type: formData.facility_type,
+      location: formData.location,
+      description: formData.description,
+      capacity: Number(formData.capacity),
+      price_per_hour: Number(formData.price_per_hour),
+      image: formData.image,
     };
 
-    return (
-        <>
-            <button
-                className="btn btn-sm btn-ghost"
-                onClick={() => document.getElementById(`modal-${facility._id}`).showModal()
-                } > Update Facilities</button>
+    try {
+      setUpdating(true);
 
+      const token = localStorage.getItem("token");
 
-            <dialog id={`modal-${facility._id}`} className="modal">
-                <div className="modal-box">
-                    <h3 className="font-bold text-lg mb-4"> Update Facility </h3>
-                    <form onSubmit={handleUpdate} className="space-y-3">
-                        <input
-                            type="text"
-                            defaultValue={facility.name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="input input-bordered w-full"
-                            placeholder="Facility Name" />
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/facilities/${facility._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedFacility),
+        }
+      );
 
-                        <textarea
-                            defaultValue={facility.description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            className="textarea textarea-bordered w-full"
-                            placeholder="Description" />
+      const data = await res.json();
 
-                        <input
-                            type="number"
-                            defaultValue={facility.capacity}
-                            onChange={(e) => setCapacity(e.target.value)}
-                            className="input input-bordered w-full"
-                            placeholder="Capacity" />
+      if (data.modifiedCount > 0 || data.matchedCount > 0) {
+        toast.success("Facility updated successfully.");
 
-                        <input
-                            type="number"
-                            defaultValue={facility.price_per_hour}
-                            onChange={(e) => setPrice(e.target.value)}
-                            className="input input-bordered w-full"
-                            placeholder="Price Per Hour" />
+        onUpdated?.({
+          ...facility,
+          ...updatedFacility,
+        });
 
-                        <input
-                            type="text"
-                            defaultValue={facility.image}
-                            onChange={(e) => setImage(e.target.value)}
-                            className="input input-bordered w-full"
-                            placeholder="Image URL" />
+        closeModal();
+      } else {
+        toast.error("No facility was updated.");
+      }
+    } catch (error) {
+      console.error("Failed to update facility:", error);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setUpdating(false);
+    }
+  };
 
-                        <button className="btn btn-ghost w-full">Update</button>
+  return (
+    <>
+      <button
+        type="button"
+        className="btn btn-sm btn-outline flex-1 rounded-full"
+        onClick={openModal}
+      >
+        Update
+      </button>
 
-                    </form>
+      <dialog id={modalId} className="modal">
+        <div className="modal-box rounded-2xl max-w-2xl">
+          <h3 className="font-bold text-xl">Update Facility</h3>
 
-                    <div className="modal-action">
-                        <form method="dialog">
-                            <button className="btn">Close</button>
-                        </form>
-                    </div>
-                </div>
-            </dialog>
-        </>
-    );
+          <p className="text-base-content/60 text-sm mt-1 mb-5">
+            Edit your facility details and keep your listing up to date.
+          </p>
+
+          <form onSubmit={handleUpdate} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="form-control">
+                <label className="label py-1">
+                  <span className="label-text font-semibold">
+                    Facility Name
+                  </span>
+                </label>
+
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="input input-bordered w-full"
+                  placeholder="Facility Name"
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label py-1">
+                  <span className="label-text font-semibold">
+                    Facility Type
+                  </span>
+                </label>
+
+                <select
+                  name="facility_type"
+                  value={formData.facility_type}
+                  onChange={handleChange}
+                  className="select select-bordered w-full"
+                >
+                  <option value="">Select sport type</option>
+
+                  {FACILITY_TYPES.map((type) => (
+                    <option key={type.value} value={type.value}>
+                      {type.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="form-control">
+              <label className="label py-1">
+                <span className="label-text font-semibold">Location</span>
+              </label>
+
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                className="input input-bordered w-full"
+                placeholder="Location"
+              />
+            </div>
+
+            <div className="form-control">
+              <label className="label py-1">
+                <span className="label-text font-semibold">Description</span>
+              </label>
+
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                className="textarea textarea-bordered w-full min-h-24"
+                placeholder="Description"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="form-control">
+                <label className="label py-1">
+                  <span className="label-text font-semibold">Capacity</span>
+                </label>
+
+                <input
+                  type="number"
+                  name="capacity"
+                  value={formData.capacity}
+                  onChange={handleChange}
+                  className="input input-bordered w-full"
+                  placeholder="Capacity"
+                  min="1"
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label py-1">
+                  <span className="label-text font-semibold">
+                    Price Per Hour
+                  </span>
+                </label>
+
+                <input
+                  type="number"
+                  name="price_per_hour"
+                  value={formData.price_per_hour}
+                  onChange={handleChange}
+                  className="input input-bordered w-full"
+                  placeholder="Price Per Hour"
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <div className="form-control">
+              <label className="label py-1">
+                <span className="label-text font-semibold">Image URL</span>
+              </label>
+
+              <input
+                type="url"
+                name="image"
+                value={formData.image}
+                onChange={handleChange}
+                className="input input-bordered w-full"
+                placeholder="https://example.com/image.jpg"
+              />
+            </div>
+
+            <div className="modal-action">
+              <button
+                type="button"
+                onClick={closeModal}
+                disabled={updating}
+                className="btn btn-ghost"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                disabled={updating}
+                className="btn bg-green-600 hover:bg-green-700 text-white border-none"
+              >
+                {updating ? (
+                  <>
+                    <span className="loading loading-spinner loading-sm"></span>
+                    Updating...
+                  </>
+                ) : (
+                  "Save Changes"
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+    </>
+  );
 };
 
 export default UpdateFacilityModal;

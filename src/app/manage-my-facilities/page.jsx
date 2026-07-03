@@ -35,6 +35,14 @@ const ManageMyFacilitiesContent = () => {
     );
   };
 
+  const handleUpdatedFacility = (updatedFacility) => {
+    setFacilities((previousFacilities) =>
+      previousFacilities.map((facility) =>
+        facility._id === updatedFacility._id ? updatedFacility : facility
+      )
+    );
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-200">
@@ -55,7 +63,9 @@ const ManageMyFacilitiesContent = () => {
           <p className="text-green-600 font-semibold uppercase tracking-wide text-sm">
             Owner Dashboard
           </p>
+
           <h1 className="text-3xl font-bold mt-2">Manage My Facilities</h1>
+
           <p className="text-base-content/60 mt-2">
             Update or remove facilities you have listed on SportNest.
           </p>
@@ -75,6 +85,7 @@ const ManageMyFacilitiesContent = () => {
                 key={facility._id}
                 facility={facility}
                 onDeleted={handleDeletedFacility}
+                onUpdated={handleUpdatedFacility}
               />
             ))}
           </div>

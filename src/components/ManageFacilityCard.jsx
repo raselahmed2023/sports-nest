@@ -3,10 +3,10 @@
 import Image from "next/image";
 import { LuMapPin } from "react-icons/lu";
 import { IoIosPeople } from "react-icons/io";
-import DeleteModal from "../components/DeleteModal";
-import UpdateFacilityModal from "../components/UpdateMange";
+import DeleteModal from "./DeleteModal";
+import UpdateFacilityModal from "./UpdateMange";
 
-export default function ManageFacilityCard({ facility, onDeleted }) {
+export default function ManageFacilityCard({ facility, onDeleted, onUpdated }) {
   return (
     <div className="card bg-base-100 shadow-sm h-full border border-base-200 overflow-hidden">
       <figure>
@@ -41,7 +41,7 @@ export default function ManageFacilityCard({ facility, onDeleted }) {
         </p>
 
         <div className="flex gap-2 mt-auto pt-4">
-          <UpdateFacilityModal facility={facility} />
+          <UpdateFacilityModal facility={facility} onUpdated={onUpdated} />
 
           <DeleteModal
             id={facility._id}

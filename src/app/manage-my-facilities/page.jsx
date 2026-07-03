@@ -19,13 +19,7 @@ const ManageMyFacilitiesContent = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setFacilities(data);
-        } else {
-          console.log("Server response:", data);
-          setFacilities([]);
-        }
-
+        setFacilities(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch((error) => {
@@ -34,6 +28,12 @@ const ManageMyFacilitiesContent = () => {
         setLoading(false);
       });
   }, []);
+
+  const handleDeletedFacility = (deletedId) => {
+    setFacilities((previousFacilities) =>
+      previousFacilities.filter((facility) => facility._id !== deletedId)
+    );
+  };
 
   if (loading) {
     return (
@@ -51,9 +51,15 @@ const ManageMyFacilitiesContent = () => {
   return (
     <div className="min-h-screen bg-base-200">
       <div className="max-w-6xl mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-8 text-center">
-          Manage My Facilities
-        </h1>
+        <div className="text-center mb-8">
+          <p className="text-green-600 font-semibold uppercase tracking-wide text-sm">
+            Owner Dashboard
+          </p>
+          <h1 className="text-3xl font-bold mt-2">Manage My Facilities</h1>
+          <p className="text-base-content/60 mt-2">
+            Update or remove facilities you have listed on SportNest.
+          </p>
+        </div>
 
         {facilities.length === 0 ? (
           <div className="text-center py-20 bg-base-100 rounded-2xl">
@@ -65,7 +71,11 @@ const ManageMyFacilitiesContent = () => {
         ) : (
           <div className="grid md:grid-cols-3 gap-6">
             {facilities.map((facility) => (
-              <ManageFacilityCard key={facility._id} facility={facility} />
+              <ManageFacilityCard
+                key={facility._id}
+                facility={facility}
+                onDeleted={handleDeletedFacility}
+              />
             ))}
           </div>
         )}

@@ -6,11 +6,9 @@ import { IoIosPeople } from "react-icons/io";
 import DeleteModal from "../components/DeleteModal";
 import UpdateFacilityModal from "../components/UpdateMange";
 
-export default function ManageFacilityCard({ facility }) {
-
+export default function ManageFacilityCard({ facility, onDeleted }) {
   return (
-
-    <div className="card bg-base-100 shadow-sm">
+    <div className="card bg-base-100 shadow-sm h-full border border-base-200 overflow-hidden">
       <figure>
         <Image
           src={facility.image}
@@ -22,15 +20,34 @@ export default function ManageFacilityCard({ facility }) {
       </figure>
 
       <div className="card-body p-4">
-        <h2 className="card-title"> {facility.name}</h2>
-        <h2 className="card-title"> {facility.facility_type}</h2>
-        <p className="text-sm flex items-center gap-1"><LuMapPin /> {facility.location}</p>
-        <p className="text-sm flex items-center gap-1"> <IoIosPeople /> {facility.capacity}</p>
-        <p className="text-green-600 font-semibold">৳ {facility.price_per_hour}</p>
+        <div className="flex items-start justify-between gap-3">
+          <h2 className="card-title text-lg">{facility.name}</h2>
 
-        <div className="flex gap-2 mt-4">
+          <span className="badge badge-outline capitalize">
+            {facility.facility_type}
+          </span>
+        </div>
+
+        <p className="text-sm flex items-center gap-1 text-base-content/70">
+          <LuMapPin /> {facility.location}
+        </p>
+
+        <p className="text-sm flex items-center gap-1 text-base-content/70">
+          <IoIosPeople /> Capacity: {facility.capacity}
+        </p>
+
+        <p className="text-green-600 font-semibold">
+          ৳ {facility.price_per_hour} / hour
+        </p>
+
+        <div className="flex gap-2 mt-auto pt-4">
           <UpdateFacilityModal facility={facility} />
-          <DeleteModal id={facility._id} />
+
+          <DeleteModal
+            id={facility._id}
+            facilityName={facility.name}
+            onDeleted={onDeleted}
+          />
         </div>
       </div>
     </div>

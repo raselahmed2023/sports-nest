@@ -7,6 +7,8 @@ import PrivateRoute from "../../components/PrivateRoute";
 const MyBookingContent = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [cancelLoading, setCancelLoading] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,34 +30,53 @@ const MyBookingContent = () => {
       });
   }, []);
 
-  const handleCancel = async (id) => {
-    const confirmCancel = window.confirm(
-      "Are you sure you want to cancel this booking?"
-    );
+  const openCancelModal = (booking) => {
+    setSelectedBooking(booking);
+    document.getElementById("cancel_booking_modal").showModal();
+  };
 
-    if (!confirmCancel) return;
+  const closeCancelModal = () => {
+    document.getElementById("cancel_booking_modal").close();
+    setSelectedBooking(null);
+  };
 
-    const token = localStorage.getItem("token");
+  const handleCancelBooking = async () => {
+    if (!selectedBooking?._id) return;
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    try {
+      setCancelLoading(true);
 
-    const data = await res.json();
+      const token = localStorage.getItem("token");
 
-    if (data.deletedCount > 0) {
-      setBookings((previousBookings) =>
-        previousBookings.filter((booking) => booking._id !== id)
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/${selectedBooking._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
       );
-      toast.success("Booking cancelled successfully.");
-    } else {
-      toast.error("Failed to cancel booking.");
+
+      const data = await res.json();
+
+      if (data.deletedCount > 0) {
+        setBookings((previousBookings) =>
+          previousBookings.filter(
+            (booking) => booking._id !== selectedBooking._id
+          )
+        );
+
+        toast.success("Booking cancelled successfully.");
+        closeCancelModal();
+      } else {
+        toast.error("Failed to cancel booking.");
+      }
+    } catch (error) {
+      console.error("Failed to cancel booking:", error);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setCancelLoading(false);
     }
   };
 
@@ -73,7 +94,15 @@ const MyBookingContent = () => {
   return (
     <div className="min-h-screen bg-base-200">
       <div className="max-w-5xl mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-8 text-center">My Bookings</h1>
+        <div className="text-center mb-8">
+          <p className="text-green-600 font-semibold uppercase tracking-wide text-sm">
+            Booking Dashboard
+          </p>
+          <h1 className="text-3xl font-bold mt-2">My Bookings</h1>
+          <p className="text-base-content/60 mt-2">
+            Review your booked facilities and cancel reservations when needed.
+          </p>
+        </div>
 
         {!bookings.length && (
           <div className="text-center py-20 bg-base-100 rounded-2xl">
@@ -102,7 +131,7 @@ const MyBookingContent = () => {
                   </div>
 
                   <span className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 capitalize">
-                    {booking.status}
+                    {booking.status || "pending"}
                   </span>
                 </div>
 
@@ -117,7 +146,7 @@ const MyBookingContent = () => {
                   </p>
 
                   <button
-                    onClick={() => handleCancel(booking._id)}
+                    onClick={() => openCancelModal(booking)}
                     className="btn btn-sm btn-error text-white rounded-full"
                   >
                     Cancel
@@ -128,6 +157,57 @@ const MyBookingContent = () => {
           </div>
         )}
       </div>
+
+      <dialog id="cancel_booking_modal" className="modal">
+        <div className="modal-box rounded-2xl">
+          <h3 className="font-bold text-xl">Cancel Booking?</h3>
+
+          <p className="text-base-content/60 mt-3">
+            Are you sure you want to cancel your booking for{" "}
+            <span className="font-semibold text-base-content">
+              {selectedBooking?.facility_name}
+            </span>
+            ?
+          </p>
+
+          <div className="bg-base-200 rounded-xl p-4 mt-4 text-sm space-y-1">
+            <p>Date: {selectedBooking?.booking_date}</p>
+            <p>Slot: {selectedBooking?.time_slot}</p>
+            <p>Price: Taka {selectedBooking?.total_price}</p>
+          </div>
+
+          <div className="modal-action">
+            <button
+              type="button"
+              onClick={closeCancelModal}
+              className="btn btn-ghost"
+              disabled={cancelLoading}
+            >
+              Keep Booking
+            </button>
+
+            <button
+              type="button"
+              onClick={handleCancelBooking}
+              disabled={cancelLoading}
+              className="btn btn-error text-white"
+            >
+              {cancelLoading ? (
+                <>
+                  <span className="loading loading-spinner loading-sm"></span>
+                  Cancelling...
+                </>
+              ) : (
+                "Yes, Cancel"
+              )}
+            </button>
+          </div>
+        </div>
+
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
     </div>
   );
 };

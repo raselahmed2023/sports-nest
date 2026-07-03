@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import { LuMapPin } from "react-icons/lu";
+import SportsCard from "./SportsCard";
 
 const FeaturedFacilities = () => {
   const [facilities, setFacilities] = useState([]);
@@ -22,52 +21,44 @@ const FeaturedFacilities = () => {
   }, []);
 
   if (loading) {
-    return <p className="text-center mt-10">Loading facilities...</p>;
+    return (
+      <section className="px-4 sm:px-8 lg:px-12 py-12 bg-base-200">
+        <div className="text-center">
+          <span className="loading loading-spinner loading-lg text-success"></span>
+          <p className="mt-3 text-base-content/60">Loading featured facilities...</p>
+        </div>
+      </section>
+    );
   }
 
   return (
-    <div className="px-12 py-12 bg-base-200">
-      <h2 className="text-3xl font-bold text-center mb-8">
-        Featured Facilities
-      </h2>
+    <section className="px-4 sm:px-8 lg:px-12 py-14 bg-base-200">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <p className="text-green-600 font-semibold uppercase tracking-wide text-sm">
+            Featured Facilities
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2">
+            Popular Places to Play
+          </h2>
+          <p className="text-base-content/60 mt-3">
+            Explore top sports facilities and reserve your preferred time slot in minutes.
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {facilities.map((facility) => (
-          <div
-            key={facility._id}
-            className="card bg-base-100 shadow-sm"
-          >
-
-            <figure>
-              <Image
-                src={facility.image}
-                alt={facility.name}
-                width={400}
-                height={250}
-                className="h-44 w-full object-cover"
-              />
-            </figure>
-
-
-            <div className="card-body p-4">
-
-              <h2 className="card-title text-lg flex justify-between items-center">
-                {facility.name}
-                <span className="badge badge-outline capitalize">
-                  {facility.facility_type}
-                </span>
-              </h2>
-
-              <p className="text-sm flex text-center items-center gap-2"><LuMapPin /> {facility.location}</p>
-
-              <p className="font-semibold text-green-600">
-                ৳ {facility.price_per_hour} / hour
-              </p>
-            </div>
+        {facilities.length === 0 ? (
+          <div className="text-center py-16 bg-base-100 rounded-2xl">
+            <p className="text-base-content/60">No facilities available right now.</p>
           </div>
-        ))}
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {facilities.map((facility) => (
+              <SportsCard key={facility._id} facility={facility} />
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,235 +1,185 @@
 "use client";
 
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { FaStar } from "react-icons/fa";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-const REVIEWS = [
+const reviews = [
   {
-    name: "Rashed Ahmed",
-    sport: "Football",
-    avatar: "RA",
+    id: 1,
+    name: "Tanvir Rahman",
+    role: "Football player",
     rating: 5,
-    text: "Green Arena Turf A was amazing! The surface was top quality and booking took less than a minute. Will definitely come back.",
-    facility: "Green Arena Turf A",
-    location: "Dhanmondi, Dhaka",
+    facility: "Green Arena Turf · Dhanmondi, Dhaka",
+    review:
+      "Booking a turf was very smooth. I could see the slot, price and facility details before confirming.",
   },
   {
-    name: "Nadia Islam",
-    sport: "Badminton",
-    avatar: "NI",
+    id: 2,
+    name: "Nusrat Jahan",
+    role: "Badminton player",
     rating: 5,
-    text: "Smash Point Court 2 is air-conditioned and spotless. The slot system is super easy. No more calling to check availability!",
-    facility: "Smash Point Court 2",
-    location: "Gulshan, Dhaka",
+    facility: "Rich Court · Kushtia",
+    review:
+      "The court information was clear and the booking process saved a lot of time compared to calling manually.",
   },
   {
-    name: "Tanvir Hossain",
-    sport: "Swimming",
-    avatar: "TH",
-    rating: 4,
-    text: "AquaZone lanes are clean and well maintained. Booked early morning slot — the process was smooth and instant.",
-    facility: "AquaZone Lane 3",
-    location: "Mirpur, Dhaka",
-  },
-  {
-    name: "Sumaiya Akter",
-    sport: "Tennis",
-    avatar: "SA",
-    rating: 5,
-    text: "Rally Club Court 1 exceeded my expectations. Hard surface is great and the lighting is perfect for evening sessions.",
-    facility: "Rally Club Court 1",
-    location: "Uttara, Dhaka",
-  },
-  {
+    id: 3,
     name: "Imran Khan",
-    sport: "Cricket",
-    avatar: "IK",
+    role: "Cricket player",
     rating: 4,
-    text: "CricZone nets are well-equipped. Bowling machine was available and the staff was helpful. Loved the experience.",
-    facility: "CricZone Net Bay B",
-    location: "Mohammadpur, Dhaka",
+    facility: "CricZone Net Bay B · Mohammadpur, Dhaka",
+    review:
+      "CricZone nets are well-equipped. Bowling machine was available and the staff was helpful. Loved the experience.",
   },
   {
-    name: "Farhan Kabir",
-    sport: "Football",
-    avatar: "FK",
+    id: 4,
+    name: "Sadia Akter",
+    role: "Swimmer",
     rating: 5,
-    text: "KickOff Arena has great floodlights and the turf is FIFA standard. Booked for our corporate tournament — 10/10!",
-    facility: "KickOff Arena Turf B",
-    location: "Bashundhara, Dhaka",
+    facility: "BlueWave Swimming Lane · Mirpur, Dhaka",
+    review:
+      "I liked how easy it was to find available swimming slots. The platform feels clean and beginner-friendly.",
+  },
+  {
+    id: 5,
+    name: "Arif Hossain",
+    role: "Tennis player",
+    rating: 4,
+    facility: "Ace Tennis Court · Gulshan, Dhaka",
+    review:
+      "The facility cards are helpful and the booking summary made the final confirmation simple.",
   },
 ];
 
+const ReviewSec = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
 
-function Stars({ count }) {
-  return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg
-          key={i}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill={i < count ? "#16a34a" : "#e5e7eb"}
-          className="w-4 h-4"
-        >
-          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
+  const activeReview = reviews[activeIndex];
 
-
-function ReviewCard({ review }) {
-  return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col gap-4 w-full">
-
-      
-      <div className="flex items-center gap-3">
-        <div className="w-11 h-11 rounded-full bg-green-100 text-green-700 font-bold text-sm flex items-center justify-center flex-shrink-0">
-          {review.avatar}
-        </div>
-        <div className="flex-1">
-          <div className="font-semibold text-gray-900 text-sm">{review.name}</div>
-          <div className="text-xs text-gray-400">{review.sport} player</div>
-        </div>
-        <Stars count={review.rating} />
-      </div>
-
-
-      <p className="text-gray-500 text-sm leading-relaxed">
-        &ldquo;{review.text}&rdquo;
-      </p>
-
-     
-      <div className="flex items-center gap-2 pt-2 border-t border-gray-50">
-        <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-        <span className="text-xs text-gray-400">
-          {review.facility} · {review.location}
-        </span>
-      </div>
-
-    </div>
-  );
-}
-
-
-function Dots({ total, current, onChange }) {
-  return (
-    <div className="flex gap-2 justify-center mt-6">
-      {Array.from({ length: total }).map((_, i) => (
-        <button
-          key={i}
-          onClick={() => onChange(i)}
-          className={`h-2 rounded-full transition-all duration-300 ${
-            i === current ? "bg-green-600 w-6" : "bg-gray-200 w-2"
-          }`}
-        />
-      ))}
-    </div>
-  );
-}
-
-
-export default function ReviewSection() {
-  const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1); // 1 = left, -1 = right
-
-  
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setDirection(1);
-      setCurrent((prev) => (prev + 1) % REVIEWS.length);
-    }, 3500);
-    return () => clearInterval(timer);
-  }, []);
-
-  const goTo = (index) => {
-    setDirection(index > current ? 1 : -1);
-    setCurrent(index);
+  const handlePrevious = () => {
+    setActiveIndex((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
   };
 
-  const prev = () => {
-    setDirection(-1);
-    setCurrent((p) => (p - 1 + REVIEWS.length) % REVIEWS.length);
-  };
-
-  const next = () => {
-    setDirection(1);
-    setCurrent((p) => (p + 1) % REVIEWS.length);
-  };
-
-  const variants = {
-    enter: (dir) => ({
-      x: dir > 0 ? 300 : -300,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      transition: { duration: 0.45, ease: "easeOut" },
-    },
-    exit: (dir) => ({
-      x: dir > 0 ? -300 : 300,
-      opacity: 0,
-      transition: { duration: 0.35, ease: "easeIn" },
-    }),
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
   };
 
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-
-     
+    <section className="py-20 bg-base-100">
+      <div className="max-w-5xl mx-auto px-4">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-4">
-            ⭐ Trusted by players
+          <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 text-xs font-semibold px-4 py-1.5 rounded-full">
+            <FaStar className="text-yellow-500" />
+            Trusted by players
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">What Players Say</h2>
-          <p className="text-gray-400 mt-2 text-sm">
-            Real reviews from real SportNest users across Bangladesh
+
+          <h2 className="text-3xl md:text-4xl font-bold text-base-content mt-5">
+            What Players Say
+          </h2>
+
+          <p className="text-base-content/60 mt-3">
+            Real reviews from SportNest users across Bangladesh
           </p>
         </div>
 
-     
-        <div className="relative overflow-hidden">
-          <AnimatePresence custom={direction} mode="wait">
+        <div className="relative max-w-3xl mx-auto">
+          <AnimatePresence mode="wait">
             <motion.div
-              key={current}
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
+              key={activeReview.id}
+              initial={{ opacity: 0, y: 20, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              transition={{ duration: 0.35 }}
+              className="bg-base-100 border border-base-300 rounded-2xl shadow-sm p-6 md:p-8"
             >
-              <ReviewCard review={REVIEWS[current]} />
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-5">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">
+                    {activeReview.name
+                      .split(" ")
+                      .map((part) => part[0])
+                      .join("")
+                      .slice(0, 2)}
+                  </div>
+
+                  <div>
+                    <h3 className="font-bold text-base-content">
+                      {activeReview.name}
+                    </h3>
+                    <p className="text-sm text-base-content/50">
+                      {activeReview.role}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <FaStar
+                      key={star}
+                      className={
+                        star <= activeReview.rating
+                          ? "text-green-500"
+                          : "text-base-300"
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <p className="text-base-content/70 leading-7 mt-6">
+                “{activeReview.review}”
+              </p>
+
+              <div className="border-t border-base-300 mt-6 pt-4">
+                <p className="text-sm text-base-content/50">
+                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2" />
+                  {activeReview.facility}
+                </p>
+              </div>
             </motion.div>
           </AnimatePresence>
+
+          <div className="flex items-center justify-center gap-2 mt-6">
+            {reviews.map((review, index) => (
+              <button
+                key={review.id}
+                type="button"
+                onClick={() => setActiveIndex(index)}
+                aria-label={`Show review ${index + 1}`}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === activeIndex
+                    ? "w-7 bg-green-600"
+                    : "w-2 bg-base-300 hover:bg-green-300"
+                }`}
+              />
+            ))}
+          </div>
+
+          <div className="flex justify-center gap-3 mt-6">
+            <button
+              type="button"
+              onClick={handlePrevious}
+              className="btn btn-circle btn-outline border-base-300"
+              aria-label="Previous review"
+            >
+              <FiChevronLeft />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              className="btn btn-circle btn-outline border-base-300"
+              aria-label="Next review"
+            >
+              <FiChevronRight />
+            </button>
+          </div>
         </div>
-
-       
-        <Dots total={REVIEWS.length} current={current} onChange={goTo} />
-
-        <div className="flex justify-center gap-3 mt-5">
-          <button
-            onClick={prev}
-            className="w-9 h-9 rounded-full border border-gray-200 bg-white hover:bg-green-50 hover:border-green-300 flex items-center justify-center transition-all"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-gray-500">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
-          </button>
-          <button
-            onClick={next}
-            className="w-9 h-9 rounded-full border border-gray-200 bg-white hover:bg-green-50 hover:border-green-300 flex items-center justify-center transition-all"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-gray-500">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-            </svg>
-          </button>
-        </div>
-
       </div>
     </section>
   );
-}
+};
+
+export default ReviewSec;

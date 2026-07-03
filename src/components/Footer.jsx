@@ -4,7 +4,7 @@ import logo from "../../public/assets/logo.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#efffea] text-gray-700 border-t border-green-200/60">
+    <footer className="bg-base-200 text-base-content border-t border-base-300">
       <div className="max-w-7xl mx-auto px-6 md:px-16 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-2">
@@ -18,18 +18,19 @@ const Footer = () => {
               />
             </Link>
 
-            <p className="text-sm text-gray-600 mt-4 max-w-md leading-6">
+            <p className="text-sm text-base-content/70 mt-4 max-w-md leading-6">
               SportNest helps players discover sports facilities, book available
-              time slots and manage reservations with a smooth online experience.
+              time slots and manage reservations with a smooth online
+              experience.
             </p>
 
-            <div className="flex items-center gap-4 mt-6 text-gray-900">
+            <div className="flex items-center gap-4 mt-6">
               <a
                 href="https://x.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="SportNest on X"
-                className="w-9 h-9 rounded-full bg-white border border-green-100 flex items-center justify-center hover:bg-green-600 hover:text-white transition-colors"
+                className="w-9 h-9 rounded-full bg-base-100 border border-base-300 flex items-center justify-center hover:bg-green-600 hover:text-white transition-colors"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +48,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="SportNest on Facebook"
-                className="w-9 h-9 rounded-full bg-white border border-green-100 flex items-center justify-center hover:bg-green-600 hover:text-white transition-colors"
+                className="w-9 h-9 rounded-full bg-base-100 border border-base-300 flex items-center justify-center hover:bg-green-600 hover:text-white transition-colors"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +66,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="SportNest on Instagram"
-                className="w-9 h-9 rounded-full bg-white border border-green-100 flex items-center justify-center hover:bg-green-600 hover:text-white transition-colors"
+                className="w-9 h-9 rounded-full bg-base-100 border border-base-300 flex items-center justify-center hover:bg-green-600 hover:text-white transition-colors"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +84,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="SportNest on LinkedIn"
-                className="w-9 h-9 rounded-full bg-white border border-green-100 flex items-center justify-center hover:bg-green-600 hover:text-white transition-colors"
+                className="w-9 h-9 rounded-full bg-base-100 border border-base-300 flex items-center justify-center hover:bg-green-600 hover:text-white transition-colors"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -99,9 +100,9 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="text-gray-900 font-bold mb-4">Quick Links</h3>
+            <h3 className="text-base-content font-bold mb-4">Quick Links</h3>
 
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-3 text-sm text-base-content/70">
               <li>
                 <Link href="/" className="hover:text-green-600 transition">
                   Home
@@ -138,11 +139,11 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="text-gray-900 font-bold mb-4">Contact</h3>
+            <h3 className="text-base-content font-bold mb-4">Contact</h3>
 
-            <ul className="space-y-3 text-sm text-gray-600">
+            <ul className="space-y-3 text-sm text-base-content/70">
               <li>
-                <span className="font-semibold text-gray-800">Email:</span>{" "}
+                <span className="font-semibold text-base-content">Email:</span>{" "}
                 <a
                   href="mailto:support@sportnest.com"
                   className="hover:text-green-600 transition"
@@ -152,7 +153,7 @@ const Footer = () => {
               </li>
 
               <li>
-                <span className="font-semibold text-gray-800">Phone:</span>{" "}
+                <span className="font-semibold text-base-content">Phone:</span>{" "}
                 <a
                   href="tel:+8801700000000"
                   className="hover:text-green-600 transition"
@@ -162,19 +163,23 @@ const Footer = () => {
               </li>
 
               <li>
-                <span className="font-semibold text-gray-800">Location:</span>{" "}
+                <span className="font-semibold text-base-content">
+                  Location:
+                </span>{" "}
                 Dhaka, Bangladesh
               </li>
 
               <li>
-                <span className="font-semibold text-gray-800">Support:</span>{" "}
+                <span className="font-semibold text-base-content">
+                  Support:
+                </span>{" "}
                 Sat - Thu, 9:00 AM - 8:00 PM
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-green-200/70 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-500">
+        <div className="border-t border-base-300 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-base-content/60">
           <p>
             &copy; {new Date().getFullYear()} SportNest. All rights reserved.
           </p>

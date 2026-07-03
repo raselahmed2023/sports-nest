@@ -1,28 +1,21 @@
-import SportsCard from "../../components/SportsCard";
+import { Suspense } from "react";
+import FacilitiesBrowser from "../../components/FacilitiesBrowser";
 
-
-const AllFacilities = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/facilities`, {
-        cache: "no-store",
-    });
-    const facilities = await res.json();
-
-    return (
-        <div className="min-h-screen bg-base-200 px-16 py-12">
-            <h1 className="text-2xl font-bold mb-8 text-center">All Facilities</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                {facilities.map((facility) => (
-                    <SportsCard
-                        key={facility._id}
-                        facility={facility}
-                    />
-                ))}
-
-            </div>
-
+const AllFacilities = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-base-200">
+          <div className="text-center">
+            <span className="loading loading-spinner loading-lg text-success"></span>
+            <p className="mt-3 text-base-content/60">Loading facilities...</p>
+          </div>
         </div>
-    );
+      }
+    >
+      <FacilitiesBrowser />
+    </Suspense>
+  );
 };
 
 export default AllFacilities;

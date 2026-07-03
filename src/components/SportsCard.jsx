@@ -37,7 +37,11 @@ const SportsCard = ({ facility }) => {
 
                 <div className="card-actions mt-3">
                     <Link
-                        href={session?.user ? `/facility/${facility._id}` : "/login"} >
+                        href={
+                            session?.user
+                                ? `/facility/${facility._id}`
+                                : `/login?redirect=${encodeURIComponent(`/facility/${facility._id}`)}`
+                        }>
                         <button className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-full shadow-md shadow-green-600/10 transition-all duration-300 hover:-translate-y-0.5 w-full justify-center">
                             Book Now
                         </button>

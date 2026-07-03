@@ -1,24 +1,20 @@
-import React from 'react';
-
-const Loading = () => {
-    return (
-        <div className="min-h-screen bg-[#efffea] flex flex-col items-center justify-center px-6">
-            <div className="flex flex-col items-center gap-4">
-                
-                <span className="loading loading-spinner w-16 h-16 text-green-600 animate-spin"></span>
-                
-              
-                <div className="text-center mt-2">
-                    <h2 className="text-xl font-bold text-gray-800 tracking-wide">
-                        Loading SportNest
-                    </h2>
-                    <p className="text-sm text-gray-500 mt-1 animate-pulse">
-                        Fetching the best sports facilities for you...
-                    </p>
-                </div>
-            </div>
+export default function Loading() {
+  return (
+    <div className="min-h-[70vh] bg-base-200 flex items-center justify-center px-4">
+      <div className="text-center">
+        <div className="relative w-20 h-20 mx-auto">
+          <div className="absolute inset-0 rounded-full border-4 border-green-200"></div>
+          <div className="absolute inset-0 rounded-full border-4 border-green-600 border-t-transparent animate-spin"></div>
         </div>
-    );
-};
 
-export default Loading;
+        <h2 className="text-2xl font-bold text-base-content mt-6">
+          Loading SportNest
+        </h2>
+
+        <p className="text-base-content/60 mt-2">
+          Please wait while we prepare your sports facilities.
+        </p>
+      </div>
+    </div>
+  );
+}

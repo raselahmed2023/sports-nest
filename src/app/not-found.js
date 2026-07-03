@@ -1,50 +1,43 @@
-import React from 'react';
-import Link from 'next/link';
+import Link from "next/link";
+import { BiErrorCircle } from "react-icons/bi";
 
-const NotFound = () => {
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
-       
-            <div className="relative ">
-                <h1 className="text-9xl font-black text-green-600 opacity-20 select-none">
-                    404
-                </h1>
-                <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl md:text-5xl font-extrabold text-gray-800">
-                    Oops!
-                </p>
-            </div>
-
-
-            <div className="mt-6 max-w-md">
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
-                    Page Not Found
-                </h2>
-                <p className="text-gray-600 text-base md:text-lg leading-relaxed">
-                    Looks like you took a wrong turn or the sports facility page you are looking for has been moved or canceled. Lets get you back on track!
-                </p>
-            </div>
-
-           
-            <div className="mt-8">
-                <Link 
-                    href="/" 
-                    className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-green-600/20 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
-                >
-                    <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        strokeWidth={2} 
-                        stroke="currentColor" 
-                        className="w-5 height-5"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                    </svg>
-                    Back to Home
-                </Link>
-            </div>
+export default function NotFound() {
+  return (
+    <section className="min-h-[70vh] bg-base-200 flex items-center justify-center px-4 py-16">
+      <div className="max-w-xl w-full text-center bg-base-100 border border-base-300 rounded-3xl shadow-sm p-8 md:p-12">
+        <div className="w-20 h-20 mx-auto rounded-full bg-green-100 text-green-700 flex items-center justify-center text-5xl mb-6">
+          <BiErrorCircle />
         </div>
-    );
-};
 
-export default NotFound;
+        <p className="text-green-600 font-semibold uppercase tracking-wide text-sm">
+          404 Error
+        </p>
+
+        <h1 className="text-4xl md:text-5xl font-bold text-base-content mt-3">
+          Page Not Found
+        </h1>
+
+        <p className="text-base-content/60 mt-4 leading-7">
+          The page you are looking for does not exist or may have been moved.
+          Let&apos;s take you back to SportNest.
+        </p>
+
+        <div className="flex flex-col sm:flex-row justify-center gap-3 mt-8">
+          <Link
+            href="/"
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-full shadow-md shadow-green-600/10 transition-all duration-300 hover:-translate-y-0.5"
+          >
+            Back Home
+          </Link>
+
+          <Link
+            href="/all-facilities"
+            className="btn btn-outline rounded-full"
+          >
+            Explore Facilities
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}

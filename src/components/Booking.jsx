@@ -56,13 +56,10 @@ export default function BookingForm({ facility }) {
 
     const bookingInfo = {
       facility_id: facility._id,
-      facility_name: facility.name,
-      user_email: user.email,
       booking_date: date,
       time_slot: slot,
       hours: Number(hours),
       total_price: total,
-      status: "pending",
     };
 
     try {
@@ -70,9 +67,9 @@ export default function BookingForm({ facility }) {
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(bookingInfo),
       });
@@ -193,7 +190,9 @@ export default function BookingForm({ facility }) {
 
           <div className="flex items-center justify-between text-sm text-base-content/70">
             <span>Duration</span>
-            <span>{hours} hour{Number(hours) > 1 ? "s" : ""}</span>
+            <span>
+              {hours} hour{Number(hours) > 1 ? "s" : ""}
+            </span>
           </div>
 
           <div className="border-t border-base-300 pt-3 flex items-center justify-between">

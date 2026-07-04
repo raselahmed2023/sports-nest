@@ -44,6 +44,34 @@ export default function LoginPage() {
     return newErrors;
   };
 
+  const setServerAuthCookie = async () => {
+    const tokenResponse = await fetch("/api/auth/token", {
+      credentials: "include",
+    });
+
+    const tokenData = await tokenResponse.json();
+
+    if (!tokenData?.token) {
+      throw new Error("Token was not generated.");
+    }
+
+    const cookieResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/set-token`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ token: tokenData.token }),
+      }
+    );
+
+    if (!cookieResponse.ok) {
+      throw new Error("Failed to store token in HTTPOnly cookie.");
+    }
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
@@ -57,33 +85,31 @@ export default function LoginPage() {
       return;
     }
 
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const { data, error } = await authClient.signIn.email({
-      email: user.email,
-      password: user.password,
-    });
-
-    setLoading(false);
-
-    if (data) {
-      const res = await fetch("/api/auth/token", {
-        credentials: "include",
+      const { data, error } = await authClient.signIn.email({
+        email: user.email,
+        password: user.password,
       });
 
-      const tokenData = await res.json();
-
-      if (tokenData?.token) {
-        localStorage.setItem("token", tokenData.token);
+      if (error) {
+        toast.error(error.message || "Invalid email or password.");
+        return;
       }
 
-      toast.success("Login successful!");
-      router.push(redirectPath);
-      router.refresh();
-    }
+      if (data) {
+        await setServerAuthCookie();
 
-    if (error) {
-      toast.error(error.message || "Invalid email or password.");
+        toast.success("Login successful!");
+        router.push(redirectPath);
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error(error.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 

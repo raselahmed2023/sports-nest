@@ -20,15 +20,11 @@ export default function DeleteModal({ id, facilityName, onDeleted }) {
     try {
       setDeleting(true);
 
-      const token = localStorage.getItem("token");
-
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/facilities/${id}`,
         {
           method: "DELETE",
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
         }
       );
 
@@ -39,7 +35,7 @@ export default function DeleteModal({ id, facilityName, onDeleted }) {
         onDeleted?.(id);
         closeModal();
       } else {
-        toast.error("Failed to delete facility.");
+        toast.error(data.message || "Failed to delete facility.");
       }
     } catch (error) {
       console.error("Failed to delete facility:", error);

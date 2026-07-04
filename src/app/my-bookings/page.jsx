@@ -11,12 +11,8 @@ const MyBookingContent = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
     fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings`, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
@@ -46,15 +42,11 @@ const MyBookingContent = () => {
     try {
       setCancelLoading(true);
 
-      const token = localStorage.getItem("token");
-
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/${selectedBooking._id}`,
         {
           method: "DELETE",
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
         }
       );
 
@@ -70,7 +62,7 @@ const MyBookingContent = () => {
         toast.success("Booking cancelled successfully.");
         closeCancelModal();
       } else {
-        toast.error("Failed to cancel booking.");
+        toast.error(data.message || "Failed to cancel booking.");
       }
     } catch (error) {
       console.error("Failed to cancel booking:", error);
@@ -98,7 +90,9 @@ const MyBookingContent = () => {
           <p className="text-green-600 font-semibold uppercase tracking-wide text-sm">
             Booking Dashboard
           </p>
+
           <h1 className="text-3xl font-bold mt-2">My Bookings</h1>
+
           <p className="text-base-content/60 mt-2">
             Review your booked facilities and cancel reservations when needed.
           </p>
@@ -118,7 +112,7 @@ const MyBookingContent = () => {
             {bookings.map((booking) => (
               <div
                 key={booking._id}
-                className="bg-base-100 border border-base-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition"
+                className="bg-base-100 border border-base-300 rounded-2xl p-5 shadow-sm hover:shadow-md transition"
               >
                 <div className="flex items-start justify-between mb-4 gap-3">
                   <div>

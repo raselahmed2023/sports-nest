@@ -73,15 +73,13 @@ const UpdateFacilityModal = ({ facility, onUpdated }) => {
     try {
       setUpdating(true);
 
-      const token = localStorage.getItem("token");
-
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/facilities/${facility._id}`,
         {
           method: "PUT",
+          credentials: "include",
           headers: {
             "content-type": "application/json",
-            authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(updatedFacility),
         }
@@ -99,7 +97,7 @@ const UpdateFacilityModal = ({ facility, onUpdated }) => {
 
         closeModal();
       } else {
-        toast.error("No facility was updated.");
+        toast.error(data.message || "No facility was updated.");
       }
     } catch (error) {
       console.error("Failed to update facility:", error);

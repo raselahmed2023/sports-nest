@@ -14,31 +14,48 @@ const Navbar = () => {
   const user = session?.user;
 
   useEffect(() => {
-    const syncToken = async () => {
+    const syncServerAuthCookie = async () => {
       if (!session?.user) return;
 
       try {
-        const res = await fetch("/api/auth/token", {
+        const tokenResponse = await fetch("/api/auth/token", {
           credentials: "include",
         });
 
-        const tokenData = await res.json();
+        const tokenData = await tokenResponse.json();
 
-        if (tokenData?.token) {
-          localStorage.setItem("token", tokenData.token);
-        }
+        if (!tokenData?.token) return;
+
+        await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/set-token`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ token: tokenData.token }),
+        });
       } catch (error) {
-        console.error("Failed to sync token:", error);
+        console.error("Failed to sync server auth cookie:", error);
       }
     };
 
-    syncToken();
+    syncServerAuthCookie();
   }, [session]);
 
   const handleLogout = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Failed to clear server cookie:", error);
+    }
+
     await authClient.signOut();
-    localStorage.removeItem("token");
+
     router.push("/login");
+    router.refresh();
   };
 
   return (

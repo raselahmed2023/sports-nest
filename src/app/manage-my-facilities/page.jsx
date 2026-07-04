@@ -10,12 +10,8 @@ const ManageMyFacilitiesContent = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
     fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/my-facilities`, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {

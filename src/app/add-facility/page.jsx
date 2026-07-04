@@ -78,18 +78,15 @@ const AddFacilityContent = () => {
     facility.price_per_hour = Number(facility.price_per_hour);
     facility.capacity = Number(facility.capacity);
     facility.booking_count = 0;
-    facility.owner_email = user.email;
 
     try {
       setSubmitting(true);
 
-      const token = localStorage.getItem("token");
-
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/facilities`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "content-type": "application/json",
-          authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(facility),
       });
@@ -100,7 +97,7 @@ const AddFacilityContent = () => {
         toast.success("Facility added successfully!");
         router.push("/manage-my-facilities");
       } else {
-        toast.error("Failed to add facility.");
+        toast.error(data.message || "Failed to add facility.");
       }
     } catch (error) {
       console.error("Failed to add facility:", error);

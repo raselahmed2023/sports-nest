@@ -3,11 +3,11 @@
 import React, { useState } from "react";
 import { authClient } from "../../lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
+import Link from "next/link";
 import toast from "react-hot-toast";
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -22,6 +22,10 @@ export default function LoginPage() {
 
   const validateForm = (user) => {
     const newErrors = {};
+
+    if (!user.name) {
+      newErrors.name = "Name is required";
+    }
 
     if (!user.email) {
       newErrors.email = "Email is required";
@@ -50,6 +54,7 @@ export default function LoginPage() {
 
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
+
     const validationErrors = validateForm(user);
 
     if (Object.keys(validationErrors).length > 0) {
@@ -59,31 +64,22 @@ export default function LoginPage() {
 
     setLoading(true);
 
-    const { data, error } = await authClient.signIn.email({
+    const { data, error } = await authClient.signUp.email({
       email: user.email,
       password: user.password,
+      name: user.name,
+      image: user.image,
     });
 
     setLoading(false);
 
     if (data) {
-      const res = await fetch("/api/auth/token", {
-        credentials: "include",
-      });
-
-      const tokenData = await res.json();
-
-      if (tokenData?.token) {
-        localStorage.setItem("token", tokenData.token);
-      }
-
-      toast.success("Login successful!");
-      router.push(redirectPath);
-      router.refresh();
+      toast.success("Account created successfully! Please login.");
+      router.push(`/login?redirect=${encodeURIComponent(redirectPath)}`);
     }
 
     if (error) {
-      toast.error(error.message || "Invalid email or password.");
+      toast.error(error.message || "Something went wrong. Please try again.");
     }
   };
 
@@ -98,14 +94,41 @@ export default function LoginPage() {
     <div className="min-h-screen bg-base-200 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full mx-auto">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-base-content">Login</h1>
+          <h1 className="text-2xl font-bold text-base-content">
+            Create Account
+          </h1>
           <p className="text-sm text-base-content/60 mt-1">
-            Welcome back to SportNest
+            Join SportNest and start booking sports facilities
           </p>
         </div>
 
         <div className="card bg-base-100 border border-base-300 shadow-sm rounded-2xl overflow-hidden p-6 sm:p-8">
           <form onSubmit={onSubmit} className="flex flex-col gap-4">
+            <div className="form-control w-full">
+              <label className="label py-1">
+                <span className="label-text font-semibold text-sm">
+                  Name <span className="text-error">*</span>
+                </span>
+              </label>
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter your name"
+                className={`input input-bordered w-full outline-none focus:outline-none border-gray-300 focus:border-green-600 focus:ring-4 focus:ring-green-600/10 transition-all duration-200 ${
+                  errors.name ? "border-error" : ""
+                }`}
+              />
+
+              {errors.name && (
+                <label className="label py-0.5">
+                  <span className="label-text-alt text-error font-medium">
+                    {errors.name}
+                  </span>
+                </label>
+              )}
+            </div>
+
             <div className="form-control w-full">
               <label className="label py-1">
                 <span className="label-text font-semibold text-sm">
@@ -134,6 +157,21 @@ export default function LoginPage() {
             <div className="form-control w-full">
               <label className="label py-1">
                 <span className="label-text font-semibold text-sm">
+                  Photo URL
+                </span>
+              </label>
+
+              <input
+                type="url"
+                name="image"
+                placeholder="https://example.com/photo.jpg"
+                className="input input-bordered w-full outline-none focus:outline-none border-gray-300 focus:border-green-600 focus:ring-4 focus:ring-green-600/10 transition-all duration-200"
+              />
+            </div>
+
+            <div className="form-control w-full">
+              <label className="label py-1">
+                <span className="label-text font-semibold text-sm">
                   Password <span className="text-error">*</span>
                 </span>
               </label>
@@ -141,7 +179,7 @@ export default function LoginPage() {
               <input
                 type="password"
                 name="password"
-                placeholder="Enter your password"
+                placeholder="Create a strong password"
                 className={`input input-bordered w-full outline-none focus:outline-none border-gray-300 focus:border-green-600 focus:ring-4 focus:ring-green-600/10 transition-all duration-200 ${
                   errors.password ? "border-error" : ""
                 }`}
@@ -169,7 +207,7 @@ export default function LoginPage() {
                 {loading ? (
                   <span className="loading loading-spinner loading-sm" />
                 ) : (
-                  "Login"
+                  "Register"
                 )}
               </button>
             </div>
@@ -185,17 +223,17 @@ export default function LoginPage() {
               onClick={handleGoogleSignin}
               className="btn btn-outline border-base-300 hover:bg-base-200 gap-3 font-semibold rounded-xl transition-colors duration-200"
             >
-              <FcGoogle className="text-xl" /> Sign in with Google
+              <FcGoogle className="text-xl" /> Sign up with Google
             </button>
           </div>
 
           <p className="text-center text-sm mt-4">
-            New user?{" "}
+            Already have an account?{" "}
             <Link
-              href={`/signUp?redirect=${encodeURIComponent(redirectPath)}`}
+              href={`/login?redirect=${encodeURIComponent(redirectPath)}`}
               className="text-primary font-medium hover:underline"
             >
-              Register
+              Login
             </Link>
           </p>
         </div>
